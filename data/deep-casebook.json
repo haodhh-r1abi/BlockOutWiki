@@ -1,0 +1,388 @@
+{
+  "release": "deep_20261010",
+  "case_count": 54,
+  "new_demo_images": 12,
+  "articles": [
+    "07-user-segmentation",
+    "12-gameplay-casebook",
+    "13-liveops-economy-casebook",
+    "14-implementation-design",
+    "15-demo-walkthrough"
+  ],
+  "cases": [
+    {
+      "title": "BO-S01 — Global segment và level segment là hai trường",
+      "article": "07-user-segmentation.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "- **Tiền điều kiện:** snapshot trước test, levelProgress 350, global non-purchaser, level default.\n- **Hành động:** so hai nguồn cache rồi ghi seed và timer của lượt vào level 350.\n- **Kết quả:** ✅ hai nhãn cùng tồn tại; level chọn `t214-level-350`, timer 60s.\n- **Ví dụ:** default không có nghĩa “người chưa trả tiền”; đó là tên nhóm level trong response.\n- **Nguồn / trạng thái:** summary, GrandCachedRemoteLevelConfigs, BO-T06; đã đọc và đã chạy UI."
+    },
+    {
+      "title": "BO-S02 — Kho tài nguyên không xác định nhãn thương mại",
+      "article": "07-user-segmentation.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "- **Tiền điều kiện:** ✅ inventory 996.979 coin, booster hàng trăm/hàng nghìn, nhãn non-purchaser.\n- **Hành động:** đọc đồng thời segment và inventory trước/sau phiên.\n- **Kết quả có thể xác minh:** tài nguyên đã chỉnh trong lịch sử; chưa có bằng chứng số dư lớn làm đổi segment.\n- **Ví dụ:** account có thể trả 900 coin trong màn dù chưa có giao dịch tiền thật trong phiên.\n- **Nguồn / trạng thái:** before/after summary, BO-T14; đã đối chiếu. Không dùng để ước lượng thời gian cạn coin tự nhiên."
+    },
+    {
+      "title": "BO-S03 — Có năm SKU nhưng feature tắt",
+      "article": "07-user-segmentation.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "- **Tiền điều kiện:** ✅ cache Drill isEnabled=false, firstLevelToShow 110; account 350.\n- **Hành động:** kiểm cờ trước khi tìm offer ở Home.\n- **Kỳ vọng từ config:** qua mốc 110 không đủ để tuyên bố Dragon Treasure phải xuất hiện.\n- **Ví dụ:** 🧪 account whale level 350 vẫn phải qua gate bật feature, không được đảm bảo thấy SKU 25.\n- **Nguồn / trạng thái:** treasureDrillConfigModel; đã đọc config, không ép bật lại trong phiên này."
+    },
+    {
+      "title": "BO-S04 — So treatment non-purchaser và whale",
+      "article": "07-user-segmentation.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "- **Tiền điều kiện:** 🧪 event QA hợp lệ được bật, account có nhãn tương ứng và store trả metadata.\n- **Hành động:** ghi SKU được chọn, nội dung quà, thời gian còn lại và giá hiển thị.\n- **Kỳ vọng từ config:** SKU 2 và SKU 25; dollarEquivalent 2 và 25. Không tự quy ra 52.000 và 650.000 VND.\n- **Ví dụ:** tỷ lệ 12,5 lần chỉ đúng với trường danh nghĩa; chưa phải giá store hoặc tổng giá trị offer đã đo.\n- **Nguồn / trạng thái:** segmentedIAPModel; chưa chạy hai account, không có receipt thành công."
+    },
+    {
+      "title": "BO-S05 — Collection đổi quà, target giữ nguyên",
+      "article": "07-user-segmentation.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "- **Tiền điều kiện:** 🧪 cùng event, điểm 10 trước mốc tích lũy 11; hai trạng thái Collection.\n- **Hành động:** kiếm ít nhất 1 sao rồi đọc quà mốc 2.\n- **Kỳ vọng:** nhánh thường 50 coin; nhánh Collection pack loại 1; cả hai đều vượt ngưỡng 11.\n- **Ví dụ:** An nhận coin, Bình nhận pack không đòi hỏi phải khác nhau về nhãn payer.\n- **Nguồn / trạng thái:** GaeService.GetRewardSteps và hai bảng config; có ảnh pack trong hồ sơ cũ, chưa chạy cặp đối chứng10/10."
+    },
+    {
+      "title": "BO-S06 — Target riêng mốc khác target tích lũy",
+      "article": "07-user-segmentation.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "- **Tiền điều kiện:** 🧪 tổng 310 sao, đã hoàn thành hai mốc đầu.\n- **Hành động:** kiếm 1 sao để đạt 311.\n- **Kỳ vọng:** ở 310 chưa xong mốc 3; ở 311 vừa xong và nhận Time Freeze x1 ở cả hai nhánh.\n- **Ví dụ:** nếu QA đặt mốc 3 tại 300 thì tiêu chí test sai, chưa phải game lỗi.\n- **Nguồn / trạng thái:** CalculateCurrentRewardIndex, RewardSteps; đã tính toán, chưa chạy tại ranh giới311."
+    },
+    {
+      "title": "BO-S07 — Grand prize cần 6.800 sao sau mốc 24",
+      "article": "07-user-segmentation.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "- **Tiền điều kiện:** 🧪 đã đạt 15.011 sao, hoàn thành mốc 24, còn event hợp lệ.\n- **Hành động:** tiếp tục chơi và ghi tiến độ cuối cùng.\n- **Kỳ vọng:** cần thêm 6.800 để đến 21.811 mới đủ mốc 25; không nhận ngay 2.000 coin chỉ vì còn một mốc.\n- **Ví dụ:** ở x100, riêng mốc cuối vẫn cần 68 lần cộng 100 điểm. Đây là số học, không dự báo số màn thực tế.\n- **Nguồn / trạng thái:** RewardSteps[24]; chưa chạy đến hết đường."
+    },
+    {
+      "title": "BO-S08 — Chuỗi thắng tạo tốc độ, không tạo nhãn payer",
+      "article": "07-user-segmentation.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "- **Tiền điều kiện:** 🧪 GAE bắt đầu 0 điểm/index 0, mỗi win đủ điều kiện một đơn vị cơ sở.\n- **Hành động:** theo dõi năm win liên tục.\n- **Kỳ vọng từ native/config:** điểm 1→6→16→41→141; index chạm tầng x100 và bị giới hạn ở tầng cuối.\n- **Ví dụ:** tiến nhanh tới target không chứng minh backend vừa gán người chơi vào nhãn chi tiêu cao.\n- **Nguồn / trạng thái:** IncreaseScoreAndStreakMultiplier, StreakMultipliers; có ảnh chuỗi trong hồ sơ, chưa chạy lại chuỗi năm win từ 0 ngày 10/10."
+    },
+    {
+      "title": "BO-S09 — Default đóng gói khác remote hiện tại",
+      "article": "07-user-segmentation.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "- **Tiền điều kiện:** default GAE có mốc 3=200, mốc 4=300; remote 10/10 là 300/400.\n- **Hành động:** kiểm nguồn config trước khi viết bảng target; nếu QA offline cần ghi rõ cache đang có hay không.\n- **Kết quả có thể xác minh:** hai bảng thực sự khác nhau; không trộn target 200 cũ với phần thưởng 50 coin mới ở mốc 4.\n- **Ví dụ:** ngưỡng mốc 3 của remote là 311, không phải 211 của bộ default.\n- **Nguồn / trạng thái:** defaultconfigs/GaeConfigModel.json và CachedRemoteConfigs; đã đối chiếu file, không reset cache game."
+    },
+    {
+      "title": "BO-S10 — Play On lần 1 và lần 2",
+      "article": "07-user-segmentation.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "- **Tiền điều kiện:** ✅ level 350 hết 60 s; số dư 997.079 coin sau khi claim race.\n- **Hành động:** mua Add Time 900 coin, đợi hết 30 s để xem lần hai.\n- **Kết quả:** 997.079→996.179; UI lần hai là 1.900 coin. Chưa mua 1.900.\n- **Ví dụ:** tăng giá theo bậc Play On trong config; case này chưa đo thấy việc đổi segment.\n- **Nguồn / trạng thái:** BO-T13/T14/T16; đã chạy và đối chiếu cache backend."
+    },
+    {
+      "title": "BO-S11 — Quit dẫn tới upsell Block Pass",
+      "article": "07-user-segmentation.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "- **Tiền điều kiện:** ✅ đã hết giờ lần hai, UI Play On 1.900.\n- **Hành động:** đóng Out of Time.\n- **Kết quả:** Continue? cảnh báo mất mạng, Play On 1.900 và Activate Block Pass; không activate.\n- **Ví dụ:** người chơi nhận đề nghị Pass ở điểm thất bại; đây là entrypoint bán hàng, chưa chứng minh giá Pass đổi theo payer.\n- **Nguồn / trạng thái:** BO-T17; đã chạy. Chưa kiểm nhánh tài khoản đã có Pass."
+    },
+    {
+      "title": "BO-S12 — Thua một lần chưa đủ chứng minh DLB",
+      "article": "07-user-segmentation.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "- **Tiền điều kiện:** ✅ retryCount 2 trước phiên, level 350.\n- **Hành động:** từ chối tiếp tục, về Home, đọc save.\n- **Kết quả:** retry 2→3, levelProgress vẫn 350, còn 4 life; chưa đo chuỗi nhiều lượt chọn seed.\n- **Ví dụ:** không viết “thua ba lần thì tự đổi sang bàn dễ” khi bộ level này chưa có cap như MagicSort.\n- **Nguồn / trạng thái:** BO-T18 và cache level; đã chạy fail/save, nhánh đổi seed chưa xác minh."
+    },
+    {
+      "title": "BO-S13 — Firebase tắt quảng cáo nhưng backend bật",
+      "article": "07-user-segmentation.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "- **Tiền điều kiện:** ✅ ad backend isEnabled=true/configType 26; GrandCachedAdConfig bật inter từ 70.\n- **Hành động:** đọc cả hai nguồn và theo dõi điều kiện quảng cáo/SDK ở level hợp lệ.\n- **Kỳ vọng từ config:** không lấy adConfigModel=false để kết luận game không có quảng cáo.\n- **Ví dụ:** 🧪 level 69/70 cùng account là case ranh giới; phải kiểm cooldown 240 s, trạng thái mạng và NoAds.\n- **Nguồn / trạng thái:** CachedRemoteConfigs, GrandCachedAdConfig; đã đọc config, chưa đo fill rate hoặc tần suất runtime."
+    },
+    {
+      "title": "BO-S14 — Mua lần đầu và refresh segment",
+      "article": "07-user-segmentation.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "- **Tiền điều kiện:** cần receipt thử hợp lệ; global segment non-purchaser; ghi riêng nhãn event và level.\n- **Hành động:** mua thành công, đọc lại sau sync, sau khởi động và khi nhận event mới.\n- **Kỳ vọng cần đo:** global đổi khi nào; event/level có đổi theo không; giá và tiến độ cũ có được giữ nguyên không.\n- **Ví dụ:** 🧪 không gọi An là poor ngay sau mua gói đầu tiên nếu chưa thấy response gán nhãn.\n- **Nguồn / trạng thái:** SegmentService/SegmentDataService/TrySyncAllData; chưa chạy, không có receipt thành công."
+    },
+    {
+      "title": "BO-G01 — Đúng màu nhưng đường ra đang bị chặn",
+      "article": "12-gameplay-casebook.html",
+      "status": "**Trạng thái: OBSERVED, đối chiếu STATIC.** Tiền điều kiện: level 350 mới vào; khối xanh ở gần cửa xanh trái nhưng khối đỏ nằm trên đường đi. Thao tác: giữ xanh và kéo về trái. Kết quả thực: xanh không xuyên đỏ, rèm vẫn 2/9. Bất biến: footprint các khối không được chồng nhau; thao tác kéo thất bại không tăng bộ đếm xuất khối, không trừ booster. Bằng chứng: BO-T07, ảnh BO-13/BO-14; `GamePlayInputSystem.GetMaxAllowedDistanceWithCombinedCast`. Ý nghĩa: người chơi phải phân biệt “cửa đúng” và “đường đúng”; hiệu ứng hút cửa không nên ngụ ý chắc chắn xuất được.",
+      "description": "**Trạng thái: OBSERVED, đối chiếu STATIC.** Tiền điều kiện: level 350 mới vào; khối xanh ở gần cửa xanh trái nhưng khối đỏ nằm trên đường đi. Thao tác: giữ xanh và kéo về trái. Kết quả thực: xanh không xuyên đỏ, rèm vẫn 2/9. Bất biến: footprint các khối không được chồng nhau; thao tác kéo thất bại không tăng bộ đếm xuất khối, không trừ booster. Bằng chứng: BO-T07, ảnh BO-13/BO-14; `GamePlayInputSystem.GetMaxAllowedDistanceWithCombinedCast`. Ý nghĩa: người chơi phải phân biệt “cửa đúng” và “đường đúng”; hiệu ứng hút cửa không nên ngụ ý chắc chắn xuất được.\n\n![Kéo khối xanh khi còn đỏ chắn: bàn vẫn giữ nút chặn.](../assets/test_20261010/BO-14-blocked.png)"
+    },
+    {
+      "title": "BO-G02 — Di chuyển hợp lệ nhưng không ghi tiến độ",
+      "article": "12-gameplay-casebook.html",
+      "status": "**Trạng thái: OBSERVED.** Tiền điều kiện: khối vàng ngang ở hàng trên, vùng bên phải trống; cửa đỏ ở phía trên phải. Thao tác: kéo vàng sang phải rồi thả. Kết quả: vàng đổi vị trí, không biến mất qua cửa đỏ. Bất biến: số nguồn lực không đổi; một lần drag không mặc định là một lần `OnBlockExitFromBoard`. Bằng chứng: BO-T08, BO-15-move. Ví dụ thiết kế: có thể cần ba lần sắp chỗ mới xuất được một khối; đừng thiết kế tutorial chỉ đếm số lần chạm thành “tiến độ”.",
+      "description": "**Trạng thái: OBSERVED.** Tiền điều kiện: khối vàng ngang ở hàng trên, vùng bên phải trống; cửa đỏ ở phía trên phải. Thao tác: kéo vàng sang phải rồi thả. Kết quả: vàng đổi vị trí, không biến mất qua cửa đỏ. Bất biến: số nguồn lực không đổi; một lần drag không mặc định là một lần `OnBlockExitFromBoard`. Bằng chứng: BO-T08, BO-15-move. Ví dụ thiết kế: có thể cần ba lần sắp chỗ mới xuất được một khối; đừng thiết kế tutorial chỉ đếm số lần chạm thành “tiến độ”."
+    },
+    {
+      "title": "BO-G03 — Một Rocket tạo hiệu ứng dây chuyền ở bộ đếm",
+      "article": "12-gameplay-casebook.html",
+      "status": "**Trạng thái: OBSERVED.** Tiền điều kiện: đỏ chặn xanh, Rocket 1.000; rèm 2/9. Thao tác: chọn Rocket, chỉ đỏ. Kết quả: Rocket 999; đỏ biến mất; rèm 1/8; cửa băng đều giảm một. Bất biến: một lần dùng chỉ tiêu một Rocket; cùng một lần giải quyết mục tiêu không được trừ bộ đếm hai lần do animation và callback cùng gọi. Bằng chứng: BO-T10; G2. Ý nghĩa: giá 600 coin là giá tháo một nút trong chuỗi phụ thuộc, không chỉ giá của diện tích khối đỏ.",
+      "description": "**Trạng thái: OBSERVED.** Tiền điều kiện: đỏ chặn xanh, Rocket 1.000; rèm 2/9. Thao tác: chọn Rocket, chỉ đỏ. Kết quả: Rocket 999; đỏ biến mất; rèm 1/8; cửa băng đều giảm một. Bất biến: một lần dùng chỉ tiêu một Rocket; cùng một lần giải quyết mục tiêu không được trừ bộ đếm hai lần do animation và callback cùng gọi. Bằng chứng: BO-T10; G2. Ý nghĩa: giá 600 coin là giá tháo một nút trong chuỗi phụ thuộc, không chỉ giá của diện tích khối đỏ."
+    },
+    {
+      "title": "BO-G04 — Xuất xanh sau Rocket mở một vùng mới",
+      "article": "12-gameplay-casebook.html",
+      "status": "**Trạng thái: OBSERVED.** Tiền điều kiện: sau G03, còn rèm 1/8; đường xanh sang trái đã thông. Thao tác: kéo xanh tới cửa xanh. Kết quả: rèm đầu mở, rèm sau về 7, cửa trên về 11. Bất biến: mở rèm không tự kết luận thắng; các khối dưới rèm phải trở thành tương tác được theo luật của chúng. Bằng chứng: BO-T11, ảnh bên dưới. Điểm thiết kế: nhịp thưởng là “dọn cục bộ → phát hiện thêm vùng”, giúp một level có nhiều pha thay vì một bài toán phẳng.",
+      "description": "**Trạng thái: OBSERVED.** Tiền điều kiện: sau G03, còn rèm 1/8; đường xanh sang trái đã thông. Thao tác: kéo xanh tới cửa xanh. Kết quả: rèm đầu mở, rèm sau về 7, cửa trên về 11. Bất biến: mở rèm không tự kết luận thắng; các khối dưới rèm phải trở thành tương tác được theo luật của chúng. Bằng chứng: BO-T11, ảnh bên dưới. Điểm thiết kế: nhịp thưởng là “dọn cục bộ → phát hiện thêm vùng”, giúp một level có nhiều pha thay vì một bài toán phẳng.\n\n![Xuất xanh mở rèm đầu và lộ tầng khối tiếp theo.](../assets/test_20261010/BO-19-green-exit.png)"
+    },
+    {
+      "title": "BO-G05 — UFO chọn đại diện cho một tập mục tiêu",
+      "article": "12-gameplay-casebook.html",
+      "status": "**Trạng thái: OBSERVED + STATIC.** Tiền điều kiện: sau G04, UFO 999, có nhiều khối/lớp vàng; rèm sau 7. Thao tác: chọn UFO rồi vàng. Kết quả thật: UFO 998; cửa trên 11 → 7; rèm 7 → 3; xanh lộ dưới lớp vàng. Bất biến: tập mục tiêu phải được lọc theo cùng màu, cùng trạng thái sao và quyền vật cản; không được hiểu “cùng màu” là bỏ qua mọi khóa. Bằng chứng native: `Board.<OnUfoBoosterUsed>d__46.MoveNext`, phần so `_BlockColorType`, `HasStarObstacle`, `OnBoosterUsageCanExitDoor`, tiếp theo `MoveUfoBlocksSequence`. Ví dụ biên 🧪: chọn vàng không sao bên cạnh vàng có sao; không tự gộp cả hai vào một tập.",
+      "description": "**Trạng thái: OBSERVED + STATIC.** Tiền điều kiện: sau G04, UFO 999, có nhiều khối/lớp vàng; rèm sau 7. Thao tác: chọn UFO rồi vàng. Kết quả thật: UFO 998; cửa trên 11 → 7; rèm 7 → 3; xanh lộ dưới lớp vàng. Bất biến: tập mục tiêu phải được lọc theo cùng màu, cùng trạng thái sao và quyền vật cản; không được hiểu “cùng màu” là bỏ qua mọi khóa. Bằng chứng native: `Board.<OnUfoBoosterUsed>d__46.MoveNext`, phần so `_BlockColorType`, `HasStarObstacle`, `OnBoosterUsageCanExitDoor`, tiếp theo `MoveUfoBlocksSequence`. Ví dụ biên 🧪: chọn vàng không sao bên cạnh vàng có sao; không tự gộp cả hai vào một tập."
+    },
+    {
+      "title": "BO-G06 — Khối nhiều lớp khiến “đã xóa vàng” chưa phải “đã dọn ô”",
+      "article": "12-gameplay-casebook.html",
+      "status": "**Trạng thái: OBSERVED cho việc lộ xanh; STATIC cho mô hình lớp.** Tiền điều kiện: mục tiêu có `ILE=true`, lớp kế `LBCT=Blue`. Thao tác: giải quyết lớp vàng bằng UFO như G05. Kết quả: khối xanh xuất hiện ở vùng vừa xử lý. Bất biến: tổng số GameObject không cần giảm một cách đơn điệu; mục tiêu logic phải tính lớp chờ. Bằng chứng: BO-21, `LayerBlockObstacle.SpawnLayerBlock`; dữ liệu level 350 có 6 bản ghi lớp. Ý nghĩa: độ khó không nên đo chỉ bằng số khối BMS; nên có thêm số lớp và số lần xử lý tối thiểu.",
+      "description": "**Trạng thái: OBSERVED cho việc lộ xanh; STATIC cho mô hình lớp.** Tiền điều kiện: mục tiêu có `ILE=true`, lớp kế `LBCT=Blue`. Thao tác: giải quyết lớp vàng bằng UFO như G05. Kết quả: khối xanh xuất hiện ở vùng vừa xử lý. Bất biến: tổng số GameObject không cần giảm một cách đơn điệu; mục tiêu logic phải tính lớp chờ. Bằng chứng: BO-21, `LayerBlockObstacle.SpawnLayerBlock`; dữ liệu level 350 có 6 bản ghi lớp. Ý nghĩa: độ khó không nên đo chỉ bằng số khối BMS; nên có thêm số lớp và số lần xử lý tối thiểu."
+    },
+    {
+      "title": "BO-G07 — Kéo chéo khi một trục bị tường chặn",
+      "article": "12-gameplay-casebook.html",
+      "status": "**Trạng thái: STATIC; ví dụ PROPOSED.** Tiền điều kiện 🧪: khối vuông sát tường trái, phía trên trống, không có khóa trục. Thao tác: kéo chéo lên-trái. Kỳ vọng theo hàm tách trục: thành phần trái bị giới hạn, thành phần lên vẫn được xét; khối có thể trượt dọc tường. Bất biến: không xuyên tường; thả tay phải có vị trí hợp lệ. Bằng chứng: `GetMaxAllowedXAndYSeparately`, `ForceSitBlock`. Case phải chạy ở tốc độ kéo chậm và nhanh; kết quả hình học tương đương dù độ mượt hiển thị khác. Không đánh dấu pass từ ảnh tĩnh G1.",
+      "description": "**Trạng thái: STATIC; ví dụ PROPOSED.** Tiền điều kiện 🧪: khối vuông sát tường trái, phía trên trống, không có khóa trục. Thao tác: kéo chéo lên-trái. Kỳ vọng theo hàm tách trục: thành phần trái bị giới hạn, thành phần lên vẫn được xét; khối có thể trượt dọc tường. Bất biến: không xuyên tường; thả tay phải có vị trí hợp lệ. Bằng chứng: `GetMaxAllowedXAndYSeparately`, `ForceSitBlock`. Case phải chạy ở tốc độ kéo chậm và nhanh; kết quả hình học tương đương dù độ mượt hiển thị khác. Không đánh dấu pass từ ảnh tĩnh G1."
+    },
+    {
+      "title": "BO-G08 — Cửa đúng màu nhưng quá hẹp",
+      "article": "12-gameplay-casebook.html",
+      "status": "**Trạng thái: STATIC; dữ liệu ví dụ PROPOSED.** Tiền điều kiện 🧪: cửa ngang rộng 2 ô; khối cùng màu có cạnh đi qua cửa dài 3 ô; không vật cản. Thao tác: đẩy khối tới cửa. Kỳ vọng: `DoesBlockFitThroughDoor` từ chối; không trừ bộ đếm cửa/rèm. Bất biến: không tự xoay hình hoặc nén hình; luật xoay không xuất hiện trong control đã phân tích. Biên cần kiểm tra: cạnh đúng 2 ô và vị trí lệch nửa ô trước snap; chỉ căn theo tâm là không đủ. Ý nghĩa: cửa rộng là một điều kiện của lời giải, nên level author phải bảo đảm từng hình có lối ra khả thi.",
+      "description": "**Trạng thái: STATIC; dữ liệu ví dụ PROPOSED.** Tiền điều kiện 🧪: cửa ngang rộng 2 ô; khối cùng màu có cạnh đi qua cửa dài 3 ô; không vật cản. Thao tác: đẩy khối tới cửa. Kỳ vọng: `DoesBlockFitThroughDoor` từ chối; không trừ bộ đếm cửa/rèm. Bất biến: không tự xoay hình hoặc nén hình; luật xoay không xuất hiện trong control đã phân tích. Biên cần kiểm tra: cạnh đúng 2 ô và vị trí lệch nửa ô trước snap; chỉ căn theo tâm là không đủ. Ý nghĩa: cửa rộng là một điều kiện của lời giải, nên level author phải bảo đảm từng hình có lối ra khả thi."
+    },
+    {
+      "title": "BO-G09 — Chạm khối khóa khác với chạm khoảng trống",
+      "article": "12-gameplay-casebook.html",
+      "status": "**Trạng thái: STATIC; ví dụ PROPOSED.** Tiền điều kiện 🧪: một khối băng chưa phá xong, một ô trống bên cạnh. Thao tác: lần lượt chạm giữa khối và giữa ô trống. Kỳ vọng: khối khóa trả `CanNotMove` và phản hồi không thể di chuyển; ô không bắt được mục tiêu trả `NotFound`. Bất biến: không gán khối khóa làm đang kéo. Bằng chứng: `TryFindClickedBlock`, `PlayCannotMoveAnimationForBlock`, `IceBlockObstacle.CanMove`. Không suy ra mọi obstacle đều cấm di chuyển: lớp màu và bom có hợp đồng riêng.",
+      "description": "**Trạng thái: STATIC; ví dụ PROPOSED.** Tiền điều kiện 🧪: một khối băng chưa phá xong, một ô trống bên cạnh. Thao tác: lần lượt chạm giữa khối và giữa ô trống. Kỳ vọng: khối khóa trả `CanNotMove` và phản hồi không thể di chuyển; ô không bắt được mục tiêu trả `NotFound`. Bất biến: không gán khối khóa làm đang kéo. Bằng chứng: `TryFindClickedBlock`, `PlayCannotMoveAnimationForBlock`, `IceBlockObstacle.CanMove`. Không suy ra mọi obstacle đều cấm di chuyển: lớp màu và bom có hợp đồng riêng."
+    },
+    {
+      "title": "BO-G10 — Cụm liên kết không được cắt rời vì khối dẫn còn khoảng trống",
+      "article": "12-gameplay-casebook.html",
+      "status": "**Trạng thái: STATIC; ví dụ PROPOSED.** Tiền điều kiện 🧪: A và B thuộc cùng nhóm, A có thể đi phải 2 ô nhưng B gặp tường sau 1 ô. Thao tác: kéo A phải 2 ô. Kỳ vọng: cụm chỉ đi tới giới hạn hợp lệ của toàn cụm. Bất biến: khoảng cách tương đối A–B giữ nguyên trong pha kéo; collision xét hợp collider. Bằng chứng: `MoveCombinedBlocks`, `GetMaxAllowedDistanceWithCombinedCast`. Level 350 có bản ghi liên kết nhưng chuỗi G01–G05 chưa cô lập riêng hành vi nhóm, vì vậy đây chưa là test đã xác nhận.",
+      "description": "**Trạng thái: STATIC; ví dụ PROPOSED.** Tiền điều kiện 🧪: A và B thuộc cùng nhóm, A có thể đi phải 2 ô nhưng B gặp tường sau 1 ô. Thao tác: kéo A phải 2 ô. Kỳ vọng: cụm chỉ đi tới giới hạn hợp lệ của toàn cụm. Bất biến: khoảng cách tương đối A–B giữ nguyên trong pha kéo; collision xét hợp collider. Bằng chứng: `MoveCombinedBlocks`, `GetMaxAllowedDistanceWithCombinedCast`. Level 350 có bản ghi liên kết nhưng chuỗi G01–G05 chưa cô lập riêng hành vi nhóm, vì vậy đây chưa là test đã xác nhận."
+    },
+    {
+      "title": "BO-G11 — Time Freeze không phải cộng thẳng 10 vào số hiện trên đồng hồ",
+      "article": "12-gameplay-casebook.html",
+      "status": "**Trạng thái: OBSERVED cho inventory/hiệu ứng; STATIC cho duration và chặn chồng.** Tiền điều kiện: timer đang chạy; Freeze 1.002. Thao tác: dùng Freeze. Kết quả thật: count 1.001, animation băng; ảnh G2 vẫn hiển thị 00:55. Config ghi duration 10 giây, `CanUseTimeFreeze` kiểm tra freeze đang active. Bất biến dự kiến: bấm liên tiếp khi freeze active không tiêu thêm; cần đo timestamp để xác nhận đủ 10 giây, không đo bằng một screenshot. Ví dụ 🧪: còn 5 giây, freeze 10 giây thì ngân sách thao tác có thể thêm khoảng 10 giây thực, nhưng timer không nên nhảy thành 15 nếu UI dùng chế độ dừng.",
+      "description": "**Trạng thái: OBSERVED cho inventory/hiệu ứng; STATIC cho duration và chặn chồng.** Tiền điều kiện: timer đang chạy; Freeze 1.002. Thao tác: dùng Freeze. Kết quả thật: count 1.001, animation băng; ảnh G2 vẫn hiển thị 00:55. Config ghi duration 10 giây, `CanUseTimeFreeze` kiểm tra freeze đang active. Bất biến dự kiến: bấm liên tiếp khi freeze active không tiêu thêm; cần đo timestamp để xác nhận đủ 10 giây, không đo bằng một screenshot. Ví dụ 🧪: còn 5 giây, freeze 10 giây thì ngân sách thao tác có thể thêm khoảng 10 giây thực, nhưng timer không nên nhảy thành 15 nếu UI dùng chế độ dừng."
+    },
+    {
+      "title": "BO-G12 — Khối đồng hồ trả thời gian khi ra khỏi bàn",
+      "article": "12-gameplay-casebook.html",
+      "status": "**Trạng thái: STATIC + OBSERVED bổ sung trong demo mới.** Tiền điều kiện thật của lần chạy mới: chọn pre-booster đồng hồ +10; board level 350 vẫn bắt đầu 01:00, một khối vàng có biểu tượng đồng hồ 10. Thao tác: dùng Rocket vào khối đó. Kết quả: ảnh BO-D13 hiện +10s và timer 01:09; Rocket 999 → 998; cửa/rèm cùng giảm một. Đây là baseline mới, không nối số dư với chuỗi G01–G06. Bằng chứng: `DurationBlockObstacle.OnBlockExitFromBoard` có guard `exitedBlock != BelongingBlock`, rồi `LevelTimer.AddExtraTime`; [demo mới BO-D09 → BO-D12 → BO-D13](15-demo-walkthrough.html). Bất biến theo native: xuất một khối khác không cấp thưởng của DurationBlock này. Ví dụ số học 🧪: còn 12, được thêm 10 thì mốc logic 22 trước khi tính thời gian trôi. Chưa chứng minh ưu tiên khi cùng frame với timeout.",
+      "description": "**Trạng thái: STATIC + OBSERVED bổ sung trong demo mới.** Tiền điều kiện thật của lần chạy mới: chọn pre-booster đồng hồ +10; board level 350 vẫn bắt đầu 01:00, một khối vàng có biểu tượng đồng hồ 10. Thao tác: dùng Rocket vào khối đó. Kết quả: ảnh BO-D13 hiện +10s và timer 01:09; Rocket 999 → 998; cửa/rèm cùng giảm một. Đây là baseline mới, không nối số dư với chuỗi G01–G06. Bằng chứng: `DurationBlockObstacle.OnBlockExitFromBoard` có guard `exitedBlock != BelongingBlock`, rồi `LevelTimer.AddExtraTime`; [demo mới BO-D09 → BO-D12 → BO-D13](15-demo-walkthrough.html). Bất biến theo native: xuất một khối khác không cấp thưởng của DurationBlock này. Ví dụ số học 🧪: còn 12, được thêm 10 thì mốc logic 22 trước khi tính thời gian trôi. Chưa chứng minh ưu tiên khi cùng frame với timeout."
+    },
+    {
+      "title": "BO-G13 — Hết giờ khi Rocket còn bay",
+      "article": "12-gameplay-casebook.html",
+      "status": "**Trạng thái: STATIC; ví dụ PROPOSED.** Tiền điều kiện 🧪: timer sát 0, Rocket đang xử lý mục tiêu cuối cùng. Thao tác: để frame kết thúc chạy. Hồ sơ native có kiểm tra `PowerUpController.IsThereActiveFlights` trước nhánh time-up; case cần xác nhận game chờ giải quyết chuyến bay, sau đó kiểm tra thắng/thua. Bất biến: không vừa hiện Win vừa hiện Out Of Time; inventory chỉ bị tiêu một lần. Bằng chứng: `LevelWinLoseHandler.CheckAndApplyTimeIsUp`, `CheckLevelEnd`. Thiết kế mong muốn là một kết quả cuối cùng; thứ tự tuyệt đối giữa mọi callback chưa được coi là đã chứng minh.",
+      "description": "**Trạng thái: STATIC; ví dụ PROPOSED.** Tiền điều kiện 🧪: timer sát 0, Rocket đang xử lý mục tiêu cuối cùng. Thao tác: để frame kết thúc chạy. Hồ sơ native có kiểm tra `PowerUpController.IsThereActiveFlights` trước nhánh time-up; case cần xác nhận game chờ giải quyết chuyến bay, sau đó kiểm tra thắng/thua. Bất biến: không vừa hiện Win vừa hiện Out Of Time; inventory chỉ bị tiêu một lần. Bằng chứng: `LevelWinLoseHandler.CheckAndApplyTimeIsUp`, `CheckLevelEnd`. Thiết kế mong muốn là một kết quả cuối cùng; thứ tự tuyệt đối giữa mọi callback chưa được coi là đã chứng minh."
+    },
+    {
+      "title": "BO-G14 — Pause bảo toàn thời gian và mặt bàn",
+      "article": "12-gameplay-casebook.html",
+      "status": "**Trạng thái: OBSERVED.** Tiền điều kiện: đã mua Play On đầu, timer khoảng 30 giây. Thao tác: mở Pause, đọc popup, Resume. Kết quả: tiếp tục ở khoảng 28 giây, không mất toàn bộ thời gian đứng đọc popup; mặt bàn sau UFO giữ nguyên. Bất biến: mở Pause không reset giá Play On, không phục hồi booster đã dùng, không tạo board mới. Bằng chứng: BO-T15; BO-28. Khác biệt cần giữ: pause của game đã chạy; bị OS kill và restore là một case khác, chưa thể suy từ đây.",
+      "description": "**Trạng thái: OBSERVED.** Tiền điều kiện: đã mua Play On đầu, timer khoảng 30 giây. Thao tác: mở Pause, đọc popup, Resume. Kết quả: tiếp tục ở khoảng 28 giây, không mất toàn bộ thời gian đứng đọc popup; mặt bàn sau UFO giữ nguyên. Bất biến: mở Pause không reset giá Play On, không phục hồi booster đã dùng, không tạo board mới. Bằng chứng: BO-T15; BO-28. Khác biệt cần giữ: pause của game đã chạy; bị OS kill và restore là một case khác, chưa thể suy từ đây.\n\n![Sau Resume: bàn đang dở và thời gian gia hạn được giữ.](../assets/test_20261010/BO-28-resume.png)"
+    },
+    {
+      "title": "BO-E01 — Claim race phải đối soát sau khi đóng bảng",
+      "article": "13-liveops-economy-casebook.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "**OBSERVED.** Tiền điều kiện: Streak Race Finished, rank 8, reward 100; coin 996.979. Thao tác: đi qua Continue và Tap to Claim. Kết quả: 997.079, không phải 997.179. Bất biến: màn kết quả hiển thị reward chưa đủ chứng minh đã cộng kho; phải có số dư trước/sau. Nguồn: BO-T03/T04, E2, BO-12. Chưa chạy: mở lại app giữa lúc claim để kiểm tra chống cấp đôi."
+    },
+    {
+      "title": "BO-E02 — Freeze có delta 0 nhưng hai giao dịch",
+      "article": "13-liveops-economy-casebook.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "**OBSERVED.** Tiền điều kiện: Freeze 1.001. Thao tác: Daily Gift cấp 1, sau đó dùng 1 trong màn. Kết quả cuối: 1.001. Bất biến phân tích: ledger phải ghi earn 1 và spend 1; không kết luận “chưa dùng Freeze” từ delta 0. Nguồn: before/after InventoryModelV2, BO-06, BO-16. Đề xuất analytics: ghi nguồn cho từng earn/spend; snapshot dùng để đối soát, không thay lịch sử giao dịch."
+    },
+    {
+      "title": "BO-E03 — Một nghìn coin khởi đầu chỉ cứu được một lần",
+      "article": "13-liveops-economy-casebook.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "**STATIC; ví dụ PROPOSED.** Tiền điều kiện 🧪: người mới có 1.000 coin theo initialCoin, không có nguồn thu khác và được dùng Play On. Thao tác: mua lần đầu 900. Kết quả tính: còn 100; lần hai giá 1.900 thì thiếu 1.800. Bất biến: không trừ coin âm; TryUse trả false phải giữ ván và mở Store theo nguồn PlayOn. Nguồn: GameEconomyModel, PlayOnLogicHandler.TryUse, gdd/PlayOn. Đây là điểm chuyển phễu: nguồn coin đầu cho một cơ hội cứu, chưa cấp đủ một chuỗi cứu."
+    },
+    {
+      "title": "BO-E04 — Giữ giá cuối khi dùng hết ba model",
+      "article": "13-liveops-economy-casebook.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "**STATIC; ví dụ PROPOSED.** Tiền điều kiện 🧪: _playOnUsage = 3, ba model có giá 900/1.900/2.900. Thao tác: gọi GetCurrentPlayOnPrice. Kỳ vọng: index bị kẹp về 2, giá 2.900; không lỗi index và không tự thành 3.900. Bất biến đề xuất: giá và số giây phải dùng cùng phiên bản config. Nguồn: native GetCurrentPlayOnPrice/GetCurrentPlayOnDuration và GrandCachedPlayOnConfig. Chưa đo UI bậc bốn."
+    },
+    {
+      "title": "BO-E05 — Thiếu một coin phải khác đủ đúng giá",
+      "article": "13-liveops-economy-casebook.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "**PROPOSED dựa trên STATIC.** Tiền điều kiện 🧪: hai fixture có 899 và 900 coin, cùng ở Play On đầu. Thao tác: bấm cứu. Kỳ vọng: 899 không bị debit; 900 bị trừ đúng 900 về 0 rồi trở lại ActivePlay với +30 giây. Bất biến: không trừ tiền rồi reset board; không cấp thời gian chỉ vì đã mở Store. Nguồn: TryUse, InventoryService.Spend, OnButtonClicked. Cần fixture riêng; chưa sửa save để chạy ca này."
+    },
+    {
+      "title": "BO-E06 — Từ chối Play On vẫn còn một bước giữ chân",
+      "article": "13-liveops-economy-casebook.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "**OBSERVED.** Tiền điều kiện: hết giờ lần hai, giá 1.900. Thao tác: bấm X. Kết quả: Continue? cảnh báo mất một mạng, giữ nút Play On 1.900 và thêm Activate Block Pass. Đóng tiếp mới tới Failed; Home còn bốn mạng, retry 2 → 3, level 350 giữ nguyên. Bất biến: không debit 1.900 khi chỉ đóng popup; không tự kích hoạt pass. Nguồn: BO-T17/T18, E4. Ý nghĩa: cần đo tỷ lệ tiếp tục/thoát ở từng popup, vì từ chối lần đầu là điểm giới thiệu sản phẩm khác.\n\n![Continue sau khi đóng Play On: cảnh báo mất mạng và banner Block Pass.](../assets/test_20261010/BO-30-quit.png)\n\n*E4 — OBSERVED. Banner hứa quyền Free Play On và quyền lợi pass; chưa có giao dịch nên chưa coi các quyền đó đã được cấp.*"
+    },
+    {
+      "title": "BO-E07 — Chín ô không phải chín kết quả đồng xác suất",
+      "article": "13-liveops-economy-casebook.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "**STATIC + OBSERVED.** Tiền điều kiện: Daily Gift có chín ô; config có 13 hoặc 16 reward entries, tổng trọng số 100. Thao tác: chọn một ô như E1. Kết quả thật: Freeze ×1. Kỳ vọng phân tích: không suy ra xác suất Freeze là 1/9; dùng bảng trọng số và nhánh WithCollection đúng. Bất biến: ảnh reveal không thay cho một thí nghiệm đo phân phối. Nguồn: dailyRewardConfigModelV2, BO-T02."
+    },
+    {
+      "title": "BO-E08 — Collection đổi nguồn coin dù Play On giữ giá",
+      "article": "13-liveops-economy-casebook.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "**STATIC; ví dụ PROPOSED.** Tiền điều kiện 🧪: hai cohort giống nhau, chỉ bảng Daily WithCollection khác. Thao tác: tính kỳ vọng 1.000 claim. Kết quả: coin 170.500 → 97.500; khoảng 350 lượt ra pack ở nhánh Collection. Bất biến: không tự quy đổi pack thành coin bằng một giá bịa; một claim không đủ kiểm tra phân phối. Nguồn: bảng trọng số phía trên. Đề xuất đo: số dư coin, tỷ lệ thiếu tiền mua Play On và tiến độ album để phân biệt nguyên nhân thay đổi doanh thu."
+    },
+    {
+      "title": "BO-E09 — Pass bước ba cần tổng chín chìa",
+      "article": "13-liveops-economy-casebook.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "**STATIC; ví dụ PROPOSED.** Tiền điều kiện 🧪: không có chìa; chi phí riêng bước 0/1/2/3 là 0/1/3/5. Thao tác: thắng Regular +1, Hard +3 rồi SuperHard +5. Kết quả: số chìa 1 → 4 → 9; ngưỡng được cộng dồn. Bất biến: một win chỉ báo tiến độ một lần; mốc đã claim không cấp lại. Nguồn: MagicPassService.GetStepByKeyCount đọc trực tiếp native; blockPassConfigModel. Không áp cách đọc threshold của UFO Rise hoặc Dragon Treasure cho Pass."
+    },
+    {
+      "title": "BO-E10 — Mua pass muộn và callback lặp",
+      "article": "13-liveops-economy-casebook.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "**STATIC cho đường nhận bù; PROPOSED cho tính nguyên tử.** Tiền điều kiện 🧪: đã đạt step 0…3, đã nhận free, chưa có paid entitlement. Thao tác: mua rồi mô phỏng callback thành công lặp hai lần trong harness riêng. Kỳ vọng thiết kế: activate một lần, cấp paid reward đủ điều kiện một lần; không phát lại free và không dùng kỳ mới để cấp thưởng kỳ cũ. Bằng chứng: ActivatePass, QueueUnclaimedRewards, TryMergeReward, IAPManager.ProcessPurchaseWithVerificationAsync. Chưa có test blackbox idempotency; không đánh pass."
+    },
+    {
+      "title": "BO-E11 — Mốc UFO Rise có quà chưa chắc là checkpoint",
+      "article": "13-liveops-economy-casebook.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "**STATIC; ví dụ PROPOSED.** Tiền điều kiện 🧪: đang step 77; checkpoint gần trước là 46; step 77 có isCheckpoint = false. Thao tác: thua. Kỳ vọng theo luật checkpoint: về 46, mất 31 step; không giữ ở 77 chỉ vì đã có quà ở đó. Bất biến đề xuất: reward đã claim và progress là hai sổ riêng; giảm progress không tự thu hồi thưởng đã cấp. Nguồn: ufoRiseConfigModel, gdd/UfoRise. Chưa chạy ở vị trí 77."
+    },
+    {
+      "title": "BO-E12 — Vượt level unlock không vượt qua cờ tắt",
+      "article": "13-liveops-economy-casebook.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "**STATIC; ví dụ PROPOSED.** Tiền điều kiện 🧪: level 350, coin 1.500; Paw Touch có firstLevel 59, ngưỡng coin 2.000 nhưng isEnable = false. Thao tác: đánh giá eligibility. Kỳ vọng: không mở offer; không bắt đầu timer 1.800 giây chỉ vì hai gate level/coin phù hợp. Bất biến: lý do bị chặn phải truy được về config; EventType 2 không đồng nghĩa đang active. Nguồn: pawTouchOfferConfig 10/10. Case enable true với coin 1.999/2.000/2.001 vẫn cần chạy để xác nhận chính xác phép so sánh ở biên."
+    },
+    {
+      "title": "BO-I01 — Thả tay và popup đến cùng frame",
+      "article": "14-implementation-design.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "**PROPOSED; nền STATIC là Input/GamePause.** Tiền điều kiện 🧪: khối đang Drag, timer 0,1 giây. Thao tác: phát TouchUp và yêu cầu Pause theo cả hai thứ tự. Kỳ vọng hợp đồng: một vị trí kết thúc hợp lệ; không còn khối bám tay sau popup; không xử lý exit door hai lần. Bất biến: input và board nhất quán. Chứng cứ cần: frame trước popup, sau Resume, board hash và số resolution. Chưa chạy case này."
+    },
+    {
+      "title": "BO-I02 — UFO nhiều mục tiêu và lớp mới sinh",
+      "article": "14-implementation-design.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "**PROPOSED trên luật STATIC, có ví dụ OBSERVED.** Tiền điều kiện 🧪: ba vàng hợp lệ, một khối có lớp xanh; thêm một vàng có sao không cùng nhóm. Thao tác: UFO chọn vàng thường. Kỳ vọng: lọc đúng tập; không lặp resolution; lớp xanh vẫn còn; UFO −1. Bất biến: không Win trước SpawnLayerBlock; không quét vô hạn các mục tiêu mới sinh trong cùng vòng lặp. Nguồn nền: BO-G05/G06 và Board.OnUfoBoosterUsed. Đánh pass cần before/after theo ID, không chỉ đếm hình."
+    },
+    {
+      "title": "BO-I03 — Khối cuối ra đúng lúc timer về ngưỡng fail",
+      "article": "14-implementation-design.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "**PROPOSED trên handler STATIC.** Tiền điều kiện 🧪: một mục tiêu cuối, không còn lớp ẩn/generator, đang bay ra; timer 0,5 giây. Thao tác: chạy frame step ở 30 và 60 FPS. Kỳ vọng hợp đồng: chỉ một kết quả terminal; reward/progress và mất life không cùng phát. Bất biến: mỗi attemptId chỉ có một outcome. Deferred check và active flights có trong hồ sơ, nhưng chưa đủ xác nhận mọi ordering. Test cần định nghĩa rõ chính sách ưu tiên Win/Fail rồi kiểm tra đúng kết quả đó, không chỉ “không crash”."
+    },
+    {
+      "title": "BO-I04 — Bấm Play On hai lần nhanh",
+      "article": "14-implementation-design.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "**PROPOSED.** Tiền điều kiện 🧪: coin 2.000, giá 900, board Stuck. Thao tác: gửi hai tap trước khi nút bị khóa. Kỳ vọng sản phẩm: một lệnh được chấp nhận, coin 1.100, timer +30, usage +1. Bất biến: không coin 200, không +60 giây hoặc usage +2 khi board chưa trở lại Active. Nguồn đường thật: TryUse → Spend → OnButtonClicked. Test hiện có chỉ bấm một lần; muốn kết luận chống double tap cần video hoặc harness riêng."
+    },
+    {
+      "title": "BO-I05 — App dừng sau debit, trước cộng giờ",
+      "article": "14-implementation-design.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "**PROPOSED; không phải bug đã quan sát.** Tiền điều kiện 🧪: đang mua Play On 900. Thao tác: trong harness có điểm ngắt sau persist coin và trước persist timer. Kỳ vọng: khôi phục thành một trạng thái nhất quán—chưa mua và giữ/hoàn coin, hoặc đã mua và có thời gian. Bất biến: không mất 900 mà mất luôn quyền lợi; ledger và save có transaction tương ứng. Việc native gọi debit rồi time chưa chứng minh atomicity. Case này cần môi trường kiểm soát, không cần phá phiên đang dùng để chụp UI."
+    },
+    {
+      "title": "BO-I06 — Mất kết nối trong lúc claim event",
+      "article": "14-implementation-design.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "**PROPOSED.** Tiền điều kiện 🧪: race Finished, 100 coin chưa nhận. Thao tác: claim rồi mất network trước hoặc sau response, mở lại. Kỳ vọng: trạng thái chờ hoặc retry rõ; cuối cùng chỉ +100, không mất thưởng vĩnh viễn hoặc +200. Bất biến: kỳ event và reward ID có thể dedupe; pending khác claimed. Chứng cứ hiện có chỉ claim thường BO-E01. Method MarkEventAsClaimedLocally không tự chứng minh server chống trùng."
+    },
+    {
+      "title": "BO-I07 — Receipt về sau khi đổi kỳ pass",
+      "article": "14-implementation-design.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "**PROPOSED trên đường STATIC IAP.** Tiền điều kiện 🧪: bắt đầu mua pass kỳ A; callback verified về khi đã có kỳ B trong cache. Thao tác: xử lý receipt pending qua đường requested hoặc not-requested. Kỳ vọng hợp đồng: grant đúng entitlement/chính sách bù kỳ hết hạn; không lẫn reward của hai kỳ. Bất biến: transaction, platform product và kỳ event được đối soát. Nguồn: ProcessPurchaseWithVerificationAsync, CompleteNotRequestedInApp, ActivatePass, QueueUnclaimedRewards. Chưa thanh toán thật hoặc mô phỏng receipt server."
+    },
+    {
+      "title": "BO-I08 — Config mới đến khi popup giá cũ còn mở",
+      "article": "14-implementation-design.html",
+      "status": "Xem nhãn và nguồn trong mô tả; không mặc nhiên là case đã chạy",
+      "description": "**PROPOSED.** Tiền điều kiện 🧪: popup ghi 900; config mới là 1.200; người chơi có 1.000. Thao tác: nhận payload rồi bấm nút. Kỳ vọng hợp đồng: tôn trọng quote 900 đã chốt, hoặc refresh 1.200 trước khi chấp nhận tap. Bất biến: amount displayed bằng amount charged của quote được chấp nhận. Không âm thầm trừ theo giá khác. Tranh chấp nguồn config ở phiên thật đã được giải thích, nhưng timing giữa popup chưa được test."
+    },
+    {
+      "title": "BO-DEMO-01 — Đánh dấu booster chưa có nghĩa là đã tiêu",
+      "article": "15-demo-walkthrough.html",
+      "status": "Đã thao tác — xem giới hạn trong case",
+      "description": "**Tiền điều kiện:** popup Level 350, kho đồng hồ 999. **Thao tác:** chạm booster đồng hồ, chụp ảnh, đóng popup bằng X, mở Level 350 lại. **Kết quả:** lần mở lại không còn dấu chọn và số lượng vẫn 999. **Ý nghĩa:** lựa chọn thuộc bước chuẩn bị; đóng popup hủy lựa chọn ở tình huống này. Không được coi lần chạm này là một lần sử dụng khi đo conversion hoặc mức tiêu thụ.\n\n![BO-DEMO-01 — Chọn booster đồng hồ 10 trước màn: dấu tích xanh hiện trên ô; số lượng vẫn 999.](../assets/deep_20261010/BO-D07-selected.png)\n![BO-DEMO-01 — Đóng rồi mở lại prelevel: dấu chọn đã mất, số lượng vẫn 999.](../assets/deep_20261010/BO-D08-reopen.png)\n\n**Case chấp nhận cho game tương tự:** nếu người chơi chọn booster rồi đổi ý rời popup, kho đồ phải giữ nguyên; UI lần sau phải phản ánh chính xác việc có lưu lựa chọn hay không. Quy tắc “xóa lựa chọn” là kết quả quan sát của BlockOut ở phiên này, không phải yêu cầu duy nhất cho mọi game."
+    },
+    {
+      "title": "BO-DEMO-02 — Prebooster đồng hồ tạo một mục tiêu phải thu",
+      "article": "15-demo-walkthrough.html",
+      "status": "Đã thao tác — xem giới hạn trong case",
+      "description": "**Tiền điều kiện:** chọn lại đồng hồ 10 rồi bấm Play. **Kết quả:** timer đầu màn vẫn 01:00, khối vàng vuông nhỏ ở hàng trên vùng rèm mang biểu tượng 10. Snapshot `entered` ghi currency type 17: 999 → 998. Khối vàng ở phiên không dùng prebooster trước đó không mang biểu tượng này.\n\n![BO-DEMO-02 — Đã vào màn: 01:00, đồng hồ 10 nằm trên khối vàng. Đây chưa phải 01:10.](../assets/deep_20261010/BO-D09-extra-time.png)\n\n**Ý nghĩa với thiết kế level:** người chơi phải đưa được khối mang đồng hồ ra ngoài hoặc dùng một công cụ phù hợp. Một khối đặt sâu sau rèm có giá trị thực dụng khác khối gần lối ra, dù cùng ghi “10”. Không nên định giá hiệu quả của booster chỉ bằng 10/60 = 16,7% thời gian màn; đó chỉ là tỷ lệ thời gian danh nghĩa, chưa tính khả năng thu được, thời điểm thu và chi phí mở đường.\n\n**Ví dụ giả định để cân bằng:** hai layout cùng 60 giây; ở layout A người chơi thường lấy được đồng hồ sau 5 giây, ở B sau 50 giây. Hai vị trí có thể cho tỷ lệ hoàn thành khác nhau dù config thời gian giống nhau. Đây là giả thuyết cần dữ liệu cohort; phiên này không đo tỷ lệ thắng."
+    },
+    {
+      "title": "BO-DEMO-03 — Rocket thu đồng hồ và tác động nhiều bộ đếm trong một thao tác",
+      "article": "15-demo-walkthrough.html",
+      "status": "Đã thao tác — xem giới hạn trong case",
+      "description": "**Tiền điều kiện:** khối vàng có đồng hồ còn trên bàn; Rocket 999. **Thao tác:** bật Rocket rồi chạm khối đó. **Kết quả quan sát:** khối mất, chữ +10s hiện cạnh timer, ảnh ghi 01:09 vì đồng hồ đã bắt đầu đếm; Rocket còn 998. Không viết thành “booster cho 9 giây”: giao diện +10s và thời gian đã trôi là hai đại lượng khác nhau.\n\n![BO-DEMO-03 — Chọn Rocket: chỉ các khối đang khả dụng được làm sáng; khối đồng hồ vẫn còn.](../assets/deep_20261010/BO-D12-rocket-target.png)\n![BO-DEMO-03 — Sau khi Rocket loại khối đồng hồ: +10s, timer 01:09, Rocket 998; các bộ đếm khóa đều giảm một.](../assets/deep_20261010/BO-D13-duration-removed.png)\n\n| Đại lượng | Trước | Sau ảnh tác động | Cách đọc |\n|---|---:|---:|---|\n| Kho Rocket trong màn | 999 | 998 | Một lần dùng thành công |\n| Rèm trên | 2 | 1 | Chưa mở; còn một đơn vị |\n| Rèm dưới | 9 | 8 | Tác động không chỉ giới hạn ở rèm gần khối |\n| Cửa trên | 13 | 12 | Bộ đếm được cập nhật cùng thao tác |\n| Cửa phải trên | 2 | 1 | Vẫn khóa tại thời điểm ảnh |\n| Cửa phải dưới | 23 | 22 | Chưa thể coi là mở đường ngay |\n\n**Đối chiếu mã:** `DurationBlockObstacle.OnBlockExitFromBoard` kiểm tra đúng khối chủ rồi gọi `LevelTimer.AddExtraTime`; xem [casebook gameplay](12-gameplay-casebook.html). Cặp ảnh bổ sung bằng chứng runtime cho nhánh dùng Rocket, không tự chứng minh mọi công cụ khác đều phát cùng callback hoặc cùng thứ tự thực thi.\n\n**Hàm ý:** một Rocket có ba lợi ích trong tình huống này: giải phóng ô, tiến gần tới mở khóa và thu thời gian. Đánh giá booster chỉ bằng “xóa một khối” bỏ mất giá trị kết hợp. Tuy vậy, bỏ hai booster để lấy 10 giây có đáng hay không còn phụ thuộc xác suất thắng; demo này không chứng minh lựa chọn đó tối ưu."
+    },
+    {
+      "title": "BO-DEMO-04 — Hủy chọn UFO không tiêu lượt",
+      "article": "15-demo-walkthrough.html",
+      "status": "Đã thao tác — xem giới hạn trong case",
+      "description": "**Tiền điều kiện:** UFO 998, không có UFO đang bay. **Thao tác:** chạm UFO để vào chọn màu/khối, sau đó chạm lại đúng nút UFO. **Kết quả quan sát:** lớp chọn đóng; bàn giữ nguyên; UFO vẫn 998. Snapshot cuối xác nhận currency type 3 giữ 998.\n\n![BO-DEMO-04 — Mở UFO: giao diện hướng dẫn chọn khối; chưa tiêu lượt.](../assets/deep_20261010/BO-D16-ufo-select.png)\n![BO-DEMO-04 — Chạm lại nút UFO: về bàn, không có khối mất, kho vẫn 998.](../assets/deep_20261010/BO-D17-ufo-cancel.png)\n\n**Phạm vi:** đây là case hủy lựa chọn. Nhánh UFO tác động nhiều khối cùng màu đã có ảnh ở đợt đầu và được giải thích kỹ tại [bài cơ chế](12-gameplay-casebook.html); không dùng ảnh hủy này làm bằng chứng cho phạm vi sát thương."
+    },
+    {
+      "title": "BO-DEMO-05 — Time Freeze giữ đồng hồ, không cộng thẳng 10 giây vào con số đang hiện",
+      "article": "15-demo-walkthrough.html",
+      "status": "Đã thao tác — xem giới hạn trong case",
+      "description": "**Tiền điều kiện:** bàn còn 01:05 trước hiệu ứng; Time Freeze 1.001. **Thao tác:** chạm Time Freeze, không di chuyển khối, chụp trong hoạt ảnh; chụp tiếp sau khoảng 5 giây và 8 giây tiếp theo. **Kết quả:** số lượng còn 1.000; ảnh đầu 01:05, ảnh giữa vẫn 01:05 và thanh băng còn hơn nửa; ảnh cuối hết băng, timer 01:01. Khoảng chờ có thêm thời gian thực hiện lệnh ADB/chụp, không dùng ba mẫu này để tuyên bố phép đo chính xác tới mili giây.\n\n![BO-DEMO-05 — Dùng Time Freeze: hoạt ảnh súng băng bắt đầu; timer 01:05, kho đã giảm còn 1.000.](../assets/deep_20261010/BO-D18-freeze.png)\n![BO-DEMO-05 — Khoảng 5 giây sau: timer vẫn 01:05, thanh băng đang giảm.](../assets/deep_20261010/BO-D19-freeze-5s.png)\n![BO-DEMO-05 — Sau khoảng 8 giây tiếp theo: băng đã hết, timer đếm tiếp tới 01:01.](../assets/deep_20261010/BO-D20-after-freeze.png)\n\n**Bất biến quan sát:** không có thêm một khoản trừ vật phẩm khi hiệu ứng kết thúc, không loại khối, không giảm bộ đếm khóa. **Khác với đồng hồ trên khối:** Time Freeze cho khoảng thời gian hành động mà không làm giảm timer; đồng hồ được thu làm tăng trực tiếp timer và gắn với việc loại đúng khối. **Khác với Pause:** Freeze giữ người chơi trong gameplay; Pause che bàn bằng menu. Phiên này không đo khả năng kéo khối trong từng frame của hiệu ứng."
+    },
+    {
+      "title": "BO-DEMO-06 — Kết thúc demo, sổ tài nguyên và ranh giới phiên",
+      "article": "15-demo-walkthrough.html",
+      "status": "Đã thao tác — xem giới hạn trong case",
+      "description": "Sau chuỗi trên, người kiểm thử chọn Quit. Trong đoạn thoát, một thao tác chạm tiếp tại vị trí nút đã đi qua màn Failed/Try Again và bắt đầu lại level 350; ảnh `BO-D23-exit-result` cho thấy layout được khởi tạo lại, timer 01:00, khối vàng không có đồng hồ. Sau đó màn thử lại được thoát bằng menu, dừng ở Failed và đóng về Home. Vì vậy, **ledger cuối bao gồm hai lần vào/thoát màn**, không mô tả nó là chi phí của một lần Quit.\n\n![BO-DEMO-06 — Failed cuối phiên: prebooster đồng hồ 998, prebooster tên lửa 999. Nút Try Again nằm gần vùng người chơi vừa bấm Quit.](../assets/deep_20261010/BO-D24-final-dialog.png)\n![BO-DEMO-06 — Home cuối: coin 996.179, level 350, 2 mạng. Không có giao dịch coin trong demo này.](../assets/deep_20261010/BO-D25-home-end.png)\n\n| Kho / tiến độ | Trước toàn phiên | Sau toàn phiên | Giải thích |\n|---|---:|---:|---|\n| Coin | 996.179 | 996.179 | Không dùng Play On hoặc mua bằng coin |\n| Đồng hồ trước màn (type 17) | 999 | 998 | Một lần chọn và bắt đầu màn |\n| Tên lửa trước màn (type 16) | 999 | 999 | Không chọn |\n| Rocket trong màn (type 4) | 999 | 998 | Loại đúng khối đồng hồ |\n| UFO (type 3) | 998 | 998 | Chỉ mở rồi hủy chọn |\n| Time Freeze (type 5) | 1.001 | 1.000 | Một lần kích hoạt |\n| levelProgress | 350 | 350 | Chưa thắng màn |\n| retryCount | 3 | 5 | Hai lần vào màn trong cả đoạn demo và thoát |\n| Mạng nhìn thấy trên Home | 4 | 2 | Hai lần bỏ màn; có đồng hồ hồi mạng đang chạy |\n\n**Quan sát vận hành:** lúc mở BlockOut, những ảnh đầu đen trong thời gian tải; sau khởi động lại và chờ, game vào được event Finished rồi Home. Không kết luận GPU, thiếu bộ nhớ hay lỗi mạng từ màu đen. Ảnh trắng/đen lúc tải không được dùng thay ảnh gameplay trong bài."
+    }
+  ],
+  "images": [
+    {
+      "file": "BO-D07-selected.png",
+      "sha256": "7a833a9fe60c5c7423db7e0dfa33b4ae921b022106d70568595a58be5d2de414"
+    },
+    {
+      "file": "BO-D08-reopen.png",
+      "sha256": "45684c1c71730a59005647101bc23be10c652abe1d4ac35a09f4e24bb0db2406"
+    },
+    {
+      "file": "BO-D09-extra-time.png",
+      "sha256": "497f5668cce873540684cac61922237df70603f805378a813e2921383d6cf679"
+    },
+    {
+      "file": "BO-D12-rocket-target.png",
+      "sha256": "a5a75243e6256f4bfeccb853dd5681a15b2e8bf3203eb4e6bca982a0d967ce4a"
+    },
+    {
+      "file": "BO-D13-duration-removed.png",
+      "sha256": "1847bbd81718502918450bc4b4df62ce29f4bee4f4dc015b54a037fccbca7f43"
+    },
+    {
+      "file": "BO-D16-ufo-select.png",
+      "sha256": "7b7a4d373f00cee2c0037387518610f823d9781c5b1c28e9cfa4ebcf573aec1f"
+    },
+    {
+      "file": "BO-D17-ufo-cancel.png",
+      "sha256": "b9cdee5d705b746c9a551d41264b5e509c20bcfa9f69d46e627a95d1ee556cd3"
+    },
+    {
+      "file": "BO-D18-freeze.png",
+      "sha256": "f0e6eadce842131dfecd255926330dc29d151719d325f3e7e2eeed56cc55e057"
+    },
+    {
+      "file": "BO-D19-freeze-5s.png",
+      "sha256": "41c68e9d767968c39066defd32e90e1a4f2d7d32287ee3924f6682bdefc317d6"
+    },
+    {
+      "file": "BO-D20-after-freeze.png",
+      "sha256": "9dca3ba4de0543d1d98b0f6fa65af739b764c1e43ad8083281a8522ac4c7f34a"
+    },
+    {
+      "file": "BO-D24-final-dialog.png",
+      "sha256": "a535905a407d72118bb7f3ee393e61906f000f8684c0f438e7839dde67ecfa14"
+    },
+    {
+      "file": "BO-D25-home-end.png",
+      "sha256": "7bb4d0f235383d65bb18418baa58067cb1dbcc512d499f8c718e5cf204b0bec8"
+    }
+  ]
+}
