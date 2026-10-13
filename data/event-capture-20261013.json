@@ -1,0 +1,399 @@
+{
+  "date": "2026-10-13",
+  "release": "events_20261013",
+  "events": [
+    {
+      "feature": "TreasureDrill",
+      "title": "Dragon Treasure — tiến độ và khóa kích hoạt",
+      "summary": "Popup dùng tên Dragon Treasure, hiển thị giá đang cache 52.000 VND và đường thưởng tối đa 10.000 coin. Các mốc đầu còn khóa khi chưa kích hoạt; lớp hướng dẫn trình bày chuỗi thắng màn → CLAIM → mốc tiếp theo. Với tiến độ được gán là 12 lần thắng, các mốc cao 40, 50, 70 và 80 vẫn có khóa trả phí. Quan sát này tách điều kiện tiến độ khỏi điều kiện sở hữu gói.",
+      "limitations": "Giá chỉ phản ánh bản cài và tài khoản kiểm thử tại lần chụp. Chưa mua gói hoặc xác minh giao dịch IAP. Tiến độ được gán cục bộ, không phải các màn đã thắng trong phiên; ảnh hướng dẫn không chứng minh phần thưởng minh họa đã được cấp.",
+      "trigger": "Mở Dragon Treasure từ trạng thái đã chuẩn bị, xem lớp hướng dẫn và phần dưới của đường thưởng. Đối chiếu phần thưởng theo tiến độ với nút kích hoạt trả phí; không thực hiện thanh toán.",
+      "setup": "Fixture drill-introduced bật cấu hình sự kiện, kéo dài instance đã cache và đánh dấu đã giới thiệu; trạng thái mua vẫn chưa kích hoạt. Fixture drill-progress riêng gán tiến độ 12 lần thắng để xem các mốc phía dưới. Các thao tác chuẩn bị này chỉ thay trạng thái cục bộ của phiên kiểm thử."
+    },
+    {
+      "feature": "MagicLab",
+      "title": "Mission Carnival — từ CLAIM đến Stage 2 và hoàn tất",
+      "summary": "Bấm nhận nhiệm vụ đầu làm hàng Superhard đổi từ CLAIM sang COMPLETED, trong khi ba hàng còn lại vẫn chờ nhận. Sau khi nhận đủ bốn nhiệm vụ, game chuyển sang Stage 2 và hiện nút Claim cho rương Stage 1. Popup rương trình bày 1 giờ mạng vô hạn cùng Freeze, Rocket và UFO, mỗi loại một. Ảnh cuối từ lab-final cho thấy năm rương có dấu tích và bốn nhiệm vụ Stage 5 đều COMPLETED.",
+      "limitations": "Điều kiện hoàn thành nhiệm vụ đã được gán trước; phiên này kiểm tra luồng nhận và cách UI đổi trạng thái. Đã quan sát popup thưởng, chưa có bằng chứng server cấp hoặc đồng bộ thành công. Ảnh Stage 5 không đại diện cho việc chơi đủ năm stage trong phiên.",
+      "trigger": "Trong lab-ready, bấm nhận từng nhiệm vụ, quan sát hàng đổi trạng thái, rồi mở phần thưởng rương Stage 1. Sau đó dùng fixture lab-final riêng để đối chiếu giao diện hoàn tất toàn bộ sự kiện.",
+      "setup": "Fixture lab-ready đặt cả bốn nhiệm vụ Stage 1 vào trạng thái đủ điều kiện nhận. Fixture lab-final là lần chuẩn bị riêng, gán trạng thái đã nhận các rương và hoàn tất nhiệm vụ Stage 5; không nối tiếp tự nhiên từ Stage 1."
+    },
+    {
+      "feature": "JetpackRace",
+      "title": "Rocket Race — thử nhánh cuối và giới hạn kết quả offline",
+      "summary": "Game hiển thị No Internet Connection khi mở nhánh cuối. Ảnh mới ghi nhận một đường vào bị chặn trong điều kiện offline; chưa chụp được popup chiến thắng hoặc trao thưởng cuối chạy thành công.",
+      "limitations": "Chưa có bằng chứng nhánh thưởng cuối có thể hoàn tất offline. Đối chiếu native cho thấy luồng Jetpack có điều kiện IsSynced; đây là giới hạn cần đọc cùng ảnh lỗi mạng, không phải bằng chứng rằng chỉ sửa một cờ sẽ tái hiện chính xác luồng server. Không chuyển ca bị chặn này thành ca thắng hoặc đã nhận thưởng.",
+      "trigger": "Thử mở trạng thái kết quả cuối từ cache đã chuẩn bị và quan sát phản hồi của game.",
+      "setup": "Fixture jetpack-final phục hồi cache cuộc đua có sẵn và chuẩn bị nhánh cuối trong điều kiện game bị cô lập mạng. Cache là dữ liệu kiểm thử đã có, không phải kết quả đua live phát sinh trong lần chụp."
+    },
+    {
+      "feature": "SkyJump",
+      "title": "Lily Leap — nhánh thắng 5/5, chia giải và thất bại",
+      "summary": "Ở sky-win, game dựng bàn Stage 1/3 với Level 5/5 rồi mở Congratulations: quỹ thưởng 5.000 coin, phần người chơi 185 coin và 26 người thắng khác, tức 27 người theo kết quả đang cache. Bấm tiếp mở Lily Leap Rewards với 185 coin và vẫn còn Tap to Claim. Snapshot lúc này giữ nguyên 996.179 coin. Ở sky-fall, game hiển thị You failed the challenge và Tap to Continue, cho phép đối chiếu hai nhánh kết quả.",
+      "limitations": "Số người và kết quả xuất phát từ cache, không phải cuộc đua live trong ngày chụp. Đã quan sát popup thưởng nhưng chưa xác nhận 185 coin cộng vào kho; còn bước Tap to Claim ở ảnh cuối nhánh thắng. Khung bàn trước kết toán có animation cập nhật số người. Hai nhánh thắng/thua sử dụng hai fixture độc lập.",
+      "trigger": "Mở nhánh thắng, bấm tiếp từ Congratulations tới popup thưởng và đối chiếu snapshot coin. Với fixture thất bại riêng, quan sát nhánh You failed the challenge mà game tự mở.",
+      "setup": "Fixture sky-win dùng cache lịch sử của cùng bản khảo sát và đặt score = 5 tại Stage 1. Fixture sky-fall riêng đặt score = −1, với mốc nhìn thấy trước đó là 4. Số người tham gia và kết quả được lấy từ cache/fixture."
+    },
+    {
+      "feature": "UfoRise",
+      "title": "UFO Rise — đỉnh 120, thưởng cuối và checkpoint",
+      "summary": "Game tự mở tháp ở bậc 120, chạy hiệu ứng nhận rương và đánh dấu tích. Tooltip cuối liệt kê 1.200 coin, Rocket ×1, Freeze ×1, UFO ×1 và 1 giờ mạng vô hạn. Snapshot sau hiển thị ghi coin cục bộ 996.179 → 997.379, khớp mức tăng 1.200; chỉ số mốc đã nhận đổi 9 → 10. Trong fixture sau rơi, UFO đứng tại checkpoint 46 đã nhận thưởng, còn các mốc 77 và 120 vẫn đóng.",
+      "limitations": "Đã có bằng chứng cộng 1.200 coin cục bộ trong fixture, chưa xác minh đồng bộ hoặc cấp thưởng từ server. Tiến độ 120 và nhánh rơi 76 → 46 đều được chuẩn bị, không phải 120 hoặc 76 màn đã chơi trong phiên. Ảnh checkpoint ghi trạng thái sau rơi, không chụp animation thất bại.",
+      "trigger": "Mở trạng thái ở đỉnh 120, quan sát hiệu ứng nhận rương, xem tooltip phần thưởng và đối chiếu snapshot cục bộ. Sau đó mở fixture sau rơi để xem vị trí giữ lại và các mốc còn khóa.",
+      "setup": "Fixture ufo-final gán tiến độ 120, mốc nhìn thấy trước đó là 119 và chỉ số đã nhận là 9 để phần thưởng cuối còn chờ. Fixture ufo-fall riêng đặt trạng thái rơi từ tiến độ 76 về checkpoint 46."
+    },
+    {
+      "feature": "GAE",
+      "title": "Star Blaze — trước mốc cuối và trạng thái hoàn thành",
+      "summary": "Với tổng 21.711 điểm, Home hiển thị 6.700/6.800 ở bậc cuối, hệ số ×100 và phần thưởng kế tiếp 2.000 coin. Bảng thưởng cho thấy Final Reward bậc 25 còn khóa; bậc 24 với 2 giờ mạng vô hạn và bậc 23 với UFO ×1 đã có dấu tích. Với tổng 21.811 điểm, banner đổi sang Completed! / Finished. Chênh lệch giữa hai fixture là 100 điểm, tương ứng phần thiếu 6.800 − 6.700; không được đọc 6.800 là tổng mục tiêu của cả sự kiện. Chạm banner hoàn tất không mở thêm popup trong lần thử.",
+      "limitations": "Hai mốc điểm được gán bằng hai fixture, chưa quan sát một màn chơi tự nhiên kiếm 100 điểm cuối. Ảnh Completed! xác nhận trạng thái kết thúc trên UI, chưa chứng minh 2.000 coin thưởng cuối được cộng vào kho hoặc đồng bộ với server. Hệ số ×100 là giá trị nhìn thấy tại fixture gần hoàn tất, không tự chứng minh công thức thưởng cho mọi loại màn.",
+      "trigger": "Mở Home ở fixture gần hoàn tất, chạm banner để xem bảng thưởng, rồi đối chiếu với Home ở fixture đạt ngưỡng cuối. Thử chạm banner Completed! để kiểm tra phản hồi tại trạng thái kết thúc.",
+      "setup": "Hai fixture riêng phục vụ đối chiếu: gae-near-final có tổng 21.711 điểm, còn gae-final có tổng 21.811 điểm. Đây là tổng điểm sự kiện; banner chỉ hiện tiến độ của bậc đang xét."
+    },
+    {
+      "feature": "BlockPass",
+      "title": "Block Pass — premium, nhận từng bậc và Bonus Vault",
+      "summary": "Home hiển thị 8 mạng Full và huy hiệu 5 trên icon Block Pass. Bảng thưởng ghi Activated, tiến độ 9/10 tới bậc 4; UFO bậc 2 và 100 coin bậc 3 có thể nhận, còn bậc 4 vẫn khóa. Sau Claim 100 coin bậc 3, snapshot pass-paid-after ghi currency type 1 tăng từ 996.179 lên 996.279 và claimedPaidSteps = [3], xác nhận đã cộng 100 coin cục bộ. Ở fixture Vault, 1.054 − 1.014 = 40 chìa dư; mức 20 chìa đổi 100 coin tạo 200 coin, khớp thanh 200/5.000 và chu kỳ tiếp theo 0/20 trên UI. Vault ghi chỉ nhận coin khi sự kiện kết thúc.",
+      "limitations": "Premium là trạng thái gán cục bộ; không mua IAP. Dấu tích bậc 3 có snapshot xác nhận cộng 100 coin cục bộ, chưa chứng minh server cấp hoặc đồng bộ. Trạng thái đã nhận 31 bậc và 1.054 chìa thuộc fixture riêng, không phải thành tích chơi trong phiên. Số 200/5.000 là số coin đang thể hiện trong Vault; chưa kiểm thử nhận Vault lúc hết hạn.",
+      "trigger": "Trong pass-premium, mở đường thưởng rồi bấm Claim 100 coin ở nhánh premium bậc 3; đối chiếu dấu tích và snapshot sau thao tác. Với pass-vault, mở phần cuối đường thưởng để xem cách game biểu diễn chìa dư và điều kiện nhận Vault.",
+      "setup": "Fixture pass-premium bật trạng thái premium cục bộ để xem Activated, giới hạn 8 mạng và các phần thưởng khả dụng. Fixture pass-vault riêng có 1.054 chìa và đặt 31 bậc dữ liệu (bậc 0–30) vào trạng thái đã nhận; tổng ngưỡng của các bậc là 1.014 chìa."
+    },
+    {
+      "feature": "Collection",
+      "title": "Nature Collection — từ đổi sao đến hoàn tất và mở Grand Collection",
+      "summary": "Cả ba mức đổi 100, 250 và 500 sao đều hiện nút khả dụng khi có 500 sao. Chọn mức 500 mở Congratulations với UFO ×1 và ba gói thẻ. Sau Tap to Claim, một màn Your Cards hiển thị Coconut 5 sao, Wildflowers 3 sao và Roots 1 sao mang nhãn New; Bromeliad 2 sao không có nhãn New. Chuyển tiếp dẫn tới animation gói màu hồng trước lượt mở kế tiếp. Chuỗi ảnh cho thấy phần thưởng rương được trình bày trước khi từng gói thẻ được mở. Fixture Forest đủ 9 thẻ mở Completed. Fixture đủ 135 thẻ chạy chuỗi hoàn tất bộ, gom thưởng 2.700 coin, mở rương toàn album 10.000 coin và Acorn Token. Sau Equip, album chuyển Grand Nature Collection 0/135 với giải 15.000 coin và booster x8.",
+      "limitations": "Set và album đã hoàn tất trong fixture cục bộ; snapshot xác nhận chuyển sang isGoldCollectionActive=true. Không phải hành trình thu thập tự nhiên hoặc xác nhận server. Một chuỗi mở gói không đủ suy ra xác suất drop; số sao và kho thẻ đầu vào đã được gán để kiểm thử.",
+      "trigger": "Mở Bonus Chest, chọn mức đổi 500 sao, bấm Tap to Claim và theo dõi chuỗi mở gói thẻ qua các màn Your Cards. Với fixture đủ album: bấm qua Theme Completed, nhận thưởng các bộ, Tap to open rương album, Tap to Continue, Equip rồi vào lại Collection.",
+      "setup": "Fixture collection-stars đặt số sao từ thẻ trùng là 500. Trạng thái album và các thẻ đang sở hữu được chuẩn bị cục bộ để xem lựa chọn đổi rương và phân biệt thẻ mới với thẻ đã có. Fixture collection-set đặt Forest đủ 9 thẻ; fixture collection-full đặt toàn bộ 135 thẻ, album thường chưa nhận giải cuối."
+    },
+    {
+      "feature": "Arena",
+      "title": "Arena — sảnh thi đấu và Round 1",
+      "summary": "Ép tiến độ Arena và cache giải mô phỏng sáu người. Sảnh Home đã đổi nền, nút Round 1 và hạng 3.",
+      "limitations": "Các lần chạm icon chưa mở bảng xếp hạng trong phiên này; không coi sảnh Home là bằng chứng đã mở đầy đủ leaderboard. Điểm và đối thủ là fixture QA.",
+      "trigger": "Khởi động game, quan sát Home, chạm icon Arena và thử tab Leaderboard. Các thao tác chưa mở được bảng xếp hạng.",
+      "setup": "Gán tiến độ Arena ở Round 1 và cache sáu người chơi mô phỏng, người kiểm thử hạng 3; kéo dài thời gian kết thúc."
+    },
+    {
+      "feature": "PawTouchOffer",
+      "title": "Voyage Deal — offer cứu vãn khi hết giờ",
+      "summary": "Ép offer còn hạn với coin dưới ngưỡng 2.000; rút timer Level 350 xuống 5 giây QA. Di chuyển một block, chờ hết giờ, đóng Out Of Time. Voyage Deal xuất hiện dưới Continue? cùng nút Play On.",
+      "limitations": "Offer và số dư là fixture từ gói fallback. Giá là hiển thị của bản cài; không nhấn mua, không kiểm tra billing. Timer gốc 60 giây được khôi phục sau case; badge 0% OFF không đại diện chiến dịch đang chạy.",
+      "trigger": "Home → Level 350 → Play; di chuyển block xanh, chờ 5 giây; đóng Out Of Time bằng X, quan sát Voyage Deal ở Continue?.",
+      "setup": "Gói offer fallback còn hạn, chưa mua; số dư 1.500 coin dưới ngưỡng 2.000. Chỉ timer QA của Level 350 đổi 60→5 giây."
+    },
+    {
+      "feature": "WeeklyTournament",
+      "title": "Weekly Contest — màn kết quả hạng nhất",
+      "summary": "Từ cache tuần, gán người chơi hạng 1 và cuộc thi đã kết thúc. Game tự mở Leaderboard → Weekly ở trạng thái Finished, hiện podium và giải 2.000 coin.",
+      "limitations": "Hạng và điểm được sửa để kiểm thử UI; không phải chiến thắng live. Không nhấn Continue/claim và chưa xác nhận cộng 2.000 coin.",
+      "trigger": "Khởi động game; bảng kết quả Weekly tự mở. Quan sát podium, Rank #1, Reward 2.000; dừng trước Continue.",
+      "setup": "Cache giải tuần: finished=true, thời điểm kết thúc đã qua, chưa claim, người kiểm thử rank=1 và score=1.000."
+    },
+    {
+      "feature": "SpecialOffer",
+      "title": "Special Offer — chưa mở được popup",
+      "summary": "Đã bật cấu hình và gán instance offer từ gói fallback, ui_type=0. Sau khởi động, Home không xuất hiện icon Special Offer.",
+      "limitations": "Mã game yêu cầu bundle surf_sale_bundle đã tải và load; dữ liệu cache khảo sát chưa có bundle đó. Điều kiện này giải thích giới hạn có thể gặp, nhưng ảnh Home không đủ tự chứng minh trạng thái nội bộ. Chưa có ảnh popup Special Offer; không thực hiện mua hoặc giả dựng ảnh.",
+      "trigger": "Khởi động lại rồi kiểm tra Home; icon Special Offer chưa xuất hiện.",
+      "setup": "Bật Adaptive Special Offer, gói fallback block.special1 chưa mua, instance còn hạn và ui_type=0."
+    }
+  ],
+  "shots": [
+    {
+      "file": "BO-E05-drill-main.png",
+      "feature": "TreasureDrill",
+      "caption": "Dragon Treasure chưa được kích hoạt: các mốc 1, 3, 5 và 10 còn biểu tượng khóa; nút kích hoạt hiển thị giá 52.000 VND. Đây là giá nhìn thấy trên bản cài và tài khoản kiểm thử, chưa có giao dịch thanh toán.",
+      "fixture": "drill-introduced",
+      "sha256": "8fdf8c6efd9f98f5c2b52f5cc3513b3b24c1877b759be5f3c0f16636c36ed827"
+    },
+    {
+      "file": "BO-E06-drill-info.png",
+      "feature": "TreasureDrill",
+      "caption": "Lớp hướng dẫn của Dragon Treasure minh họa chuỗi thắng màn → xuất hiện nút CLAIM → tiếp tục tới mốc thưởng kế tiếp. Đây là nội dung hướng dẫn do game trình bày, không phải bằng chứng đã nhận các phần thưởng minh họa.",
+      "fixture": "drill-introduced",
+      "sha256": "c42eb0bf2c2666e07574a204e2461c5d588641e5a1d403858cca55a2ac78e5c2"
+    },
+    {
+      "file": "BO-E08-drill-progress-lower.png",
+      "feature": "TreasureDrill",
+      "caption": "Với tiến độ được gán là 12 lần thắng, phần dưới của đường thưởng hiển thị các mốc 40, 50, 70 và 80. Biểu tượng khóa trả phí vẫn còn; tiến độ thắng và trạng thái kích hoạt là hai điều kiện riêng trong fixture này.",
+      "fixture": "drill-progress",
+      "sha256": "454df743e22fa3b705f684c21c7e4308ab0ed6e2617df1e89a5452be10ddcbd9"
+    },
+    {
+      "file": "BO-E11-lab-claims.png",
+      "feature": "MagicLab",
+      "caption": "Mission Carnival ở Stage 1: cả bốn nhiệm vụ đều hiển thị CLAIM. Điều kiện hoàn thành đã được gán trong fixture trước khi mở giao diện.",
+      "fixture": "lab-ready",
+      "sha256": "50ed7e93264ab1b96e55d89ab600610faff5317fc7cb192cf95a9c2e95c2e38b"
+    },
+    {
+      "file": "BO-E12-lab-first-claimed.png",
+      "feature": "MagicLab",
+      "caption": "Sau khi bấm nhận nhiệm vụ đầu tiên, hàng Superhard chuyển từ CLAIM sang COMPLETED; ba hàng còn lại vẫn chờ CLAIM. Ảnh ghi nhận thay đổi sau thao tác trong app.",
+      "fixture": "lab-ready",
+      "sha256": "3fa87bc5abd833844d8d82f6a97475932d593eef92288a54f99cafccbd13548d"
+    },
+    {
+      "file": "BO-E14-lab-stage-complete.png",
+      "feature": "MagicLab",
+      "caption": "Sau khi nhận đủ bốn nhiệm vụ của Stage 1, game chuyển phần nhiệm vụ sang Stage 2; rương Stage 1 xuất hiện nút Claim. Việc hoàn tất nhiệm vụ và việc nhận rương được thể hiện thành hai bước riêng.",
+      "fixture": "lab-ready",
+      "sha256": "2620bdd022857b38e1aba173b1b50fb31084c3ce911121e4218482ffae3fcc13"
+    },
+    {
+      "file": "BO-E15-lab-chest.png",
+      "feature": "MagicLab",
+      "caption": "Popup thưởng rương Stage 1 hiển thị 1 giờ mạng vô hạn, Freeze ×1, Rocket ×1 và UFO ×1. Ảnh xác nhận nội dung popup; chưa xác minh phần thưởng đã được server cấp hoặc đồng bộ thành công.",
+      "fixture": "lab-ready",
+      "sha256": "30210e4e608fcdf851d12cb3080a26df5a3002bb7183d7185f7b3804451465d5"
+    },
+    {
+      "file": "BO-E17-lab-final.png",
+      "feature": "MagicLab",
+      "caption": "Trong fixture hoàn tất riêng, cả năm rương có dấu tích và bốn nhiệm vụ ở Stage 5 đều ghi COMPLETED. Đây không phải kết quả chơi nối tiếp toàn bộ năm stage từ chuỗi ảnh Stage 1 ở trên.",
+      "fixture": "lab-final",
+      "sha256": "4ad4badc0c98a5948058ad35fd082442ddc4ca73820856c4de9c1b8a55ceee9f"
+    },
+    {
+      "file": "BO-E20-jetpack-open.png",
+      "feature": "JetpackRace",
+      "caption": "Thử mở kết quả Rocket Race từ cache đã ép sang nhánh cuối trong điều kiện cô lập mạng: game hiện No Internet Connection. Đây là ảnh giới hạn đã quan sát, chưa phải màn chiến thắng hay trao thưởng cuối.",
+      "fixture": "jetpack-final",
+      "sha256": "40c758e23c94ca3529adddf4a23a44fe7b0e28070639183620b75e1db62ec21a"
+    },
+    {
+      "file": "BO-E22-sky-win-home.png",
+      "feature": "SkyJump",
+      "caption": "Bàn Lily Leap hiển thị Stage 1/3, Level 5/5 và Tap to Claim trong quá trình chuyển sang nhánh hoàn tất. Tiến độ 5/5 đến từ fixture; không có năm màn thắng thực được thực hiện trong phiên chụp này.",
+      "fixture": "sky-win; cache lịch sử, score5; thao tác nhận thực trong app",
+      "sha256": "bc817d9e88924a2a3db60ddc9ec5cf2773a2ea014ddb5fe54a06d12d26bfb537"
+    },
+    {
+      "file": "BO-E23-sky-win-claim.png",
+      "feature": "SkyJump",
+      "caption": "Popup Congratulations hiển thị Grand Prize 5.000 coin và You win 185; người chơi chia giải với 26 người thắng khác, tức tổng cộng 27 người theo kết quả đang cache. Đây là số liệu của fixture, không phải kết quả một cuộc đua live hiện tại.",
+      "fixture": "sky-win; cache lịch sử, score5; thao tác nhận thực trong app",
+      "sha256": "e795d36428d07ef725747277eb31f83b8cc35ee317f332b32f9afdcb879feb65"
+    },
+    {
+      "file": "BO-E24-sky-after-claim.png",
+      "feature": "SkyJump",
+      "caption": "Sau khi bấm tiếp trên Congratulations, game mở popup Lily Leap Rewards với 185 coin và vẫn còn Tap to Claim. Snapshot tại thời điểm này ghi 996.179 coin, chưa tăng so với đầu fixture; chưa thể kết luận 185 coin đã được cộng vào kho.",
+      "fixture": "sky-win; cache lịch sử, score5; thao tác nhận thực trong app",
+      "sha256": "d9677528652fe98e6336ac1d62133728c6e82bdbb78c2bf980acbd1f05a9bec9"
+    },
+    {
+      "file": "BO-E25-sky-fall.png",
+      "feature": "SkyJump",
+      "caption": "Với fixture thất bại có score = −1, game tự mở nhánh You failed the challenge và Tap to Continue. Ảnh cho phép đối chiếu cách trình bày nhánh thua với nhánh thắng 5/5; hai nhánh dùng hai lần chuẩn bị trạng thái riêng.",
+      "fixture": "sky-fall; score=-1, mốc nhìn thấy trước4",
+      "sha256": "ea22e62a34d5c1e5c0ada6e1265aee054c2b4c705b5e41548cc87226c330bc17"
+    },
+    {
+      "file": "BO-E27-ufo-120.png",
+      "feature": "UfoRise",
+      "caption": "UFO Rise ở bậc 120: rương cuối và mốc 77 đều có dấu tích; giao diện hiện Continue. Tiến độ được gán bằng fixture, còn hiệu ứng nhận và thay đổi trạng thái hiển thị do game xử lý khi mở.",
+      "fixture": "ufo-final;120wins,lastSeen119,maxClaimedStepIndex9",
+      "sha256": "e7669c4ee207434c43a8ad9cda3d4bf3846af5c1dc88f2ea545e93e4222114a8"
+    },
+    {
+      "file": "BO-E28-ufo-final-rewards.png",
+      "feature": "UfoRise",
+      "caption": "Tooltip của rương bậc 120 liệt kê 1.200 coin, Rocket ×1, Freeze ×1, UFO ×1 và 1 giờ mạng vô hạn. Snapshot riêng ghi coin cục bộ tăng 996.179 → 997.379 và chỉ số mốc đã nhận tăng 9 → 10; đây là phần thưởng được cộng cục bộ trong fixture.",
+      "fixture": "ufo-final; tooltip sau nhận cục bộ",
+      "sha256": "c22bca99ce9b26c97261e682663f45534fdc3253867e89a118a5ade869607795"
+    },
+    {
+      "file": "BO-E30-ufo-checkpoint.png",
+      "feature": "UfoRise",
+      "caption": "Fixture sau khi rơi từ tiến độ 76 về checkpoint 46: UFO đứng tại mốc 46 đã nhận thưởng; các mốc 77 và 120 vẫn đóng. Ảnh chụp trạng thái sau rơi, không ghi lại animation thất bại và không đại diện cho 76 ván đã chơi trong phiên.",
+      "fixture": "ufo-fall",
+      "sha256": "7b25107e35ed6f87d744d91b72d23058c1140988b59aefda7d32d337be84275c"
+    },
+    {
+      "file": "BO-E32-gae-home.png",
+      "feature": "GAE",
+      "caption": "Với tổng điểm được gán là 21.811, banner Star Blaze trên Home chuyển sang Completed! / Finished và có dấu tích. Chạm banner không mở thêm popup trong lần thử này; ảnh chưa chứng minh phần thưởng cuối đã được cộng vào kho.",
+      "fixture": "gae-final",
+      "sha256": "d094b2d4ed9c6698b89179030a7f13f9d9458741836e2e9de679ddd5e77a489e"
+    },
+    {
+      "file": "BO-E36-gae-near-final-ready.png",
+      "feature": "GAE",
+      "caption": "Ở fixture tổng 21.711 điểm, banner hiển thị tiến độ riêng của bậc cuối là 6.700/6.800, hệ số ×100 và phần thưởng kế tiếp 2.000 coin. Cần phân biệt tổng điểm sự kiện với tiến độ đang hiển thị của riêng bậc cuối.",
+      "fixture": "gae-near-final",
+      "sha256": "bb41ef8cb91837d1fae81b5221a943ec3c9ba25fec995fe6fb624b85c2e1d248"
+    },
+    {
+      "file": "BO-E38-gae-popup.png",
+      "feature": "GAE",
+      "caption": "Chạm banner mở bảng thưởng Star Blaze: bậc 25 ghi Final Reward 2.000 coin và còn khóa; bậc 24 với 2 giờ mạng vô hạn, cùng bậc 23 với UFO ×1, đã có dấu tích. Đây là trạng thái gần hoàn tất ở fixture 21.711 điểm.",
+      "fixture": "gae-near-final",
+      "sha256": "570dd20a9475f8662614c17325c28c425bd88d748c3474b72edc473a83aebefa"
+    },
+    {
+      "file": "BO-E39-pass-home.png",
+      "feature": "BlockPass",
+      "caption": "Sau khi kích hoạt premium bằng fixture, Home hiển thị 8 mạng Full thay mức 5; icon Block Pass có huy hiệu 5 phần thưởng khả dụng. Không thực hiện thanh toán IAP để tạo trạng thái này.",
+      "fixture": "pass-premium",
+      "sha256": "90b8c8e40262e7615063d578d730eae993ef48b44fe495a82dd1155304083e5f"
+    },
+    {
+      "file": "BO-E41-pass-track.png",
+      "feature": "BlockPass",
+      "caption": "Block Pass hiển thị Activated và thanh tiến độ 9/10 tới bậc 4. Nhánh premium có nút Claim cho UFO ×1 ở bậc 2 và 100 coin ở bậc 3; bậc 4 vẫn bị khóa theo tiến độ. Kích hoạt premium không tự mở mọi bậc thưởng.",
+      "fixture": "pass-premium",
+      "sha256": "6283edacb9172fb8b420110fb4084aa1ec903acfd4ed24df7ba762aed3547395"
+    },
+    {
+      "file": "BO-E42-pass-paid-claimed.png",
+      "feature": "BlockPass",
+      "caption": "Sau khi bấm Claim 100 coin ở nhánh premium bậc 3, nút đổi thành dấu tích. Snapshot pass-paid-after ghi coin 996.179 → 996.279 và claimedPaidSteps = [3], xác nhận đã cộng 100 coin cục bộ; chưa xác minh server grant.",
+      "fixture": "pass-premium",
+      "sha256": "e0b54a99bbcaf48757bafb1c123205d83ffdb547b65c9c8c9dc44f5af08bcba2"
+    },
+    {
+      "file": "BO-E43-pass-vault.png",
+      "feature": "BlockPass",
+      "caption": "Fixture có 1.054 chìa và đã nhận toàn bộ 31 bậc dữ liệu (bậc 0–30). Trừ ngưỡng 1.014 chìa còn 40 chìa dư: theo mức 20 chìa đổi 100 coin, Bonus Vault hiển thị 200/5.000 coin và thanh tiếp theo 0/20. UI ghi chỉ nhận coin trong Vault khi sự kiện kết thúc.",
+      "fixture": "pass-vault",
+      "sha256": "4d5a65aaee06ddae8194a6dd39f0805f45a07153054add99f35783a356eedcb7"
+    },
+    {
+      "file": "BO-E47-collection-bonus.png",
+      "feature": "Collection",
+      "caption": "Với 500 sao từ thẻ trùng được gán trong fixture, cả ba mức đổi Bonus Chest — 100, 250 và 500 sao — đều hiển thị nút khả dụng. Đây là ba lựa chọn sử dụng cùng số sao, không phải ba phần thưởng đã nhận.",
+      "fixture": "collection-stars",
+      "sha256": "2390dd05cfb511cecc21c029aa73658cb3971c550ad049f393cb63a9c5aa0e9a"
+    },
+    {
+      "file": "BO-E48-collection-500-chest.png",
+      "feature": "Collection",
+      "caption": "Sau khi chạm rương 500 sao, game dựng popup Congratulations gồm UFO ×1 và ba gói thẻ; phía dưới vẫn còn Tap to Claim. Ảnh này ghi nhận danh sách thưởng được trình bày trước bước tiếp theo.",
+      "fixture": "collection-stars",
+      "sha256": "74490519841fef961c5d5330653676f95445f3fdb1a8bb2f6af8975cbabeb5fc"
+    },
+    {
+      "file": "BO-E49-collection-pack-open.png",
+      "feature": "Collection",
+      "caption": "Sau Tap to Claim, màn Your Cards hiển thị Coconut 5 sao, Wildflowers 3 sao và Roots 1 sao có nhãn New; Bromeliad 2 sao không có nhãn New. Đây là kết quả của một lượt mở đã quan sát, không đủ để suy ra xác suất rơi thẻ.",
+      "fixture": "collection-stars",
+      "sha256": "2f89a3044caaf7ae789db0509baf1e3c2035e02401114975fb29b46b39fd8271"
+    },
+    {
+      "file": "BO-E50-collection-pack-next.png",
+      "feature": "Collection",
+      "caption": "Chuyển tiếp từ màn Your Cards: game chạy animation gói thẻ màu hồng trước lượt mở kế tiếp. Ảnh này minh họa bước chuyển giữa các gói, chưa hiển thị kết quả thẻ của gói tiếp theo.",
+      "fixture": "collection-stars",
+      "sha256": "f76c3ce90e2d001e88c17ca5b09373bb1f69b4e775a58b9d321bf2753c1ef17f"
+    },
+    {
+      "file": "BO-E51-collection-set-home.png",
+      "feature": "Collection",
+      "caption": "Fixture đủ 9 thẻ Forest: album tăng 26/135, Forest đổi thanh tiến độ thành dấu tích; badge 9 thẻ chưa xem.",
+      "fixture": "collection-set",
+      "sha256": "c6a17ebf6630fa04e3399e8ba6e14fbcf3eeee51fcaae85617319cc1bf77318d"
+    },
+    {
+      "file": "BO-E52-collection-set-complete.png",
+      "feature": "Collection",
+      "caption": "Mở Forest: Completed, đủ 9 thẻ một sao và vị trí bộ 1/15. Các nhãn New do fixture đánh dấu thẻ chưa xem.",
+      "fixture": "collection-set",
+      "sha256": "3894510032470b5d593d1787f87fe3f79d10dc87caa5ca24c531e70127f43a61"
+    },
+    {
+      "file": "BO-E53-collection-full.png",
+      "feature": "Collection",
+      "caption": "Fixture đủ 135 thẻ: game lần lượt đưa các bộ vào chuỗi Theme Completed; ảnh minh họa bộ Desert.",
+      "fixture": "collection-full",
+      "sha256": "55babaab51d2504816c3f0c243383f108d833e1db460b5568c607bbc9a0eb7a6"
+    },
+    {
+      "file": "BO-E69-collection-finished.png",
+      "feature": "Collection",
+      "caption": "Sau chuỗi Theme Completed: popup gom thưởng các bộ, gồm sáu khoản coin 100/200/400/500/500/1.000, 1 giờ mạng và nhiều booster; còn Tap to Claim.",
+      "fixture": "collection-full",
+      "sha256": "4075dc4de427ad28b0e9d6f71e10741377e2027a66c38d8501e2ebd06ed4710b"
+    },
+    {
+      "file": "BO-E70-collection-grand-prize.png",
+      "feature": "Collection",
+      "caption": "Sau nhận phần thưởng các bộ: Nature Collection Completed! mở bước Tap to open của rương toàn album. Coin trên Home lúc này 998.879 (tăng 2.700 cục bộ từ thưởng các bộ).",
+      "fixture": "collection-full",
+      "sha256": "3b76cf80706e94947888b88c78d1aae860a777a5fa82f5a6807d3446460580c3"
+    },
+    {
+      "file": "BO-E71-collection-grand-rewards.png",
+      "feature": "Collection",
+      "caption": "Rương toàn album: 10.000 coin, Rocket/Freeze/UFO mỗi loại x5 và Acorn Token; bước tiếp theo Tap to Continue.",
+      "fixture": "collection-full",
+      "sha256": "75f185bd47e648b8954ca563825566a3c34f5b4e44234abe6f5548052e80525b"
+    },
+    {
+      "file": "BO-E72-collection-gold-unlock.png",
+      "feature": "Collection",
+      "caption": "Sau mở rương: You got Acorn Token! và nút Equip cho hồ sơ người chơi. Đây là phần thưởng trang trí của album thường.",
+      "fixture": "collection-full",
+      "sha256": "c052a70ff98363b0ccc1175733b1604feb81d66ecc6441f68d4dfb7c5019d4ec"
+    },
+    {
+      "file": "BO-E73-collection-gold.png",
+      "feature": "Collection",
+      "caption": "Sau Equip: Acorn Token hiện cạnh avatar; coin 1.008.879, tăng 10.000 cục bộ so với 998.879 sau thưởng các bộ.",
+      "fixture": "collection-full",
+      "sha256": "9c1d62fb4075b76795fc9e678135d7c907d95dc0ee744397c96c931000325184"
+    },
+    {
+      "file": "BO-E74-collection-after-completion.png",
+      "feature": "Collection",
+      "caption": "Vào lại Collection sau nhận thưởng: Grand Nature Collection, reset 0/135, giải mới 15.000 coin, token tím và booster x8; thời gian sự kiện vẫn 6d23h.",
+      "fixture": "collection-full",
+      "sha256": "947b1dbe478eb737f2b339eb4facd2ab4a1588b30a4e611298ae4ddee21017d4"
+    },
+    {
+      "file": "BO-E75-arena-home.png",
+      "feature": "Arena",
+      "caption": "Fixture Arena: Home đổi sang sảnh cúp, nút Round 1, icon hạng 3 và thời gian 6d23h. Bảng đối thủ là dữ liệu QA, chưa phải bảng xếp hạng trực tuyến.",
+      "fixture": "arena-preview",
+      "sha256": "0fb5b9c1b14d745e131d652cdc1751eefe710e17b5441cec44221abcf7e082c6"
+    },
+    {
+      "file": "BO-E81-paw-board.png",
+      "feature": "PawTouchOffer",
+      "caption": "Điều kiện QA: 1.500 coin ở Level 350, timer đã rút từ 60 xuống 5 giây để kích hoạt nhanh nhánh thua. Đây không phải thời lượng thật của level.",
+      "fixture": "paw-quick-timer",
+      "sha256": "fda43b505f49823d8b91e3637560111243752fa950c026fbc01f1492e255c33e"
+    },
+    {
+      "file": "BO-E82-paw-timeout.png",
+      "feature": "PawTouchOffer",
+      "caption": "Di chuyển một block rồi chờ hết giờ: Out Of Time, thêm 30 giây tốn 900 coin. Đóng bằng nút X để đi tiếp tới offer.",
+      "fixture": "paw-quick-timer",
+      "sha256": "99b3f341f6947f4bedab0279039282cf7b82f1f595ee82879111f19519df23a7"
+    },
+    {
+      "file": "BO-E83-paw-offer.png",
+      "feature": "PawTouchOffer",
+      "caption": "Sau đóng Out Of Time: Continue? có Play On 900 coin và Voyage Deal ở dưới: 100 coin + 15 phút mạng vô hạn, giá hiển thị 26.000 VND, timer gần 30 phút. Badge 0% OFF thuộc fixture gói fallback; không coi là mức giảm giá live.",
+      "fixture": "paw-quick-timer",
+      "sha256": "7ed7284102f0cf2a099fd7120914fe8a98894ffbb01fa348a986b88cadc1ce67"
+    },
+    {
+      "file": "BO-E84-weekly-result.png",
+      "feature": "WeeklyTournament",
+      "caption": "Ép cuộc thi đã kết thúc và người chơi hạng 1 với 1.000 điểm: Weekly Finished, podium 1–2–3, Rank #1 và Reward 2.000 coin. Nút Continue chưa được nhấn.",
+      "fixture": "weekly-result",
+      "sha256": "92a3abeaaceeb8c5486facf7998e0f75816980bdcbb0538b0b5e3bee533a69db"
+    },
+    {
+      "file": "BO-E86-special-offer-attempt.png",
+      "feature": "SpecialOffer",
+      "caption": "Kết quả âm tính: sau ép cấu hình và instance offer còn hạn, Home vẫn không có icon Special Offer. Ảnh ghi nhận chưa mở được popup, không phải ảnh nội dung offer.",
+      "fixture": "offer-preview",
+      "sha256": "48dec8f0e34e9f501ff6242007b054cc9f6a78bda410d21bf0ebacb8df437e3c"
+    }
+  ],
+  "evidence_scope": "OFFLINE FIXTURE — ép mở cục bộ trên LDPlayer; không suy diễn lịch server hoặc giao dịch từ ảnh."
+}
