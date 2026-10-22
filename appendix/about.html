@@ -39,7 +39,7 @@ device id) đã được che.</p>
 <li><b>Đừng chỉ đọc config trong APK.</b> Game chạy hai hệ cấu hình từ xa song song; với quảng cáo, Play On
 và bảng màn thì bản backend (<code>GrandConfigs/</code>) <b>thắng</b> bản Firebase. Có <b>61 khoá</b> server
 thực sự ghi đè giá trị mặc định — xem trang <i>Client vs server</i>. Ví dụ: giá Play On thật là
-900 / 1.900 / 2.900 coin chứ không phải 900/900/900; quảng cáo xen kẽ không chạy vì server đặt
+900 / 1.900 / <img class="rwi" src="../assets/img/rw/coin.png" alt="">2.900 coin chứ không phải 900/900/900; quảng cáo xen kẽ không chạy vì server đặt
 <code>firstLevelToShowInter = 10000</code> trong khi game chỉ có 999 màn.</li>
 <li>Mỗi use case có cột Evidence là tên method thật; mở file <code>.c</code> tương ứng trong
 <code>RecoveredNative/PseudoC</code> để đối chiếu.</li>
