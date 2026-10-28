@@ -66,5 +66,23 @@ details.flow{margin-top:8px}details.flow summary{cursor:pointer;color:var(--mute
 
 .event-capture-release{padding:20px;border:1px solid #b4d8e9;border-top:4px solid #137a9a;background:#eff9fc;border-radius:10px;margin:0 0 24px}.event-capture-release h2{margin-top:0}.event-capture-link{font-weight:700}.event-capture-toc ol{columns:2}@media(max-width:700px){.event-capture-toc ol{columns:1}}
 
+.deep{border:2px solid #6c4bd8;border-radius:12px;padding:6px 16px 14px;background:#faf8ff;margin:10px 0 18px}
+.deep h3{color:#4b3f9e}.deep .dmeta{font-size:12.5px;color:var(--muted);margin:2px 0 8px}
+.ev{display:inline-block;font-size:11px;font-weight:700;line-height:16px;border-radius:4px;padding:0 5px;color:#fff;margin:0 3px 0 0;vertical-align:1px;cursor:help}
+.ev-S{background:#2c6fbb}.ev-L{background:#1d8a5a}.ev-P{background:#c2410c}.ev-I{background:#7c3aed}.ev-D{background:#64748b}
+.dtldr p{margin:6px 0}
+ol.dflow{list-style:none;counter-reset:st;padding:0;margin:8px 0}
+ol.dflow>li{counter-increment:st;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 14px;padding:10px 0;border-bottom:1px dashed var(--line)}
+ol.dflow>li:last-child{border-bottom:0}
+.dstep-t{font-weight:700}.dstep-t:before{content:counter(st);display:inline-block;min-width:22px;height:22px;line-height:22px;text-align:center;border-radius:11px;background:#4b3f9e;color:#fff;font-size:12px;margin-right:6px}
+.dactor{display:inline-block;font-size:11px;border:1px solid #c9c1f0;color:#4b3f9e;border-radius:4px;padding:0 5px;margin-left:6px;font-weight:600;vertical-align:1px}
+.dthumbs{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;max-width:470px}
+.dthumbs figure{margin:0;width:112px}.dthumbs img{width:112px;height:auto;border-radius:6px;border:1px solid var(--line);cursor:zoom-in;display:block}
+.dthumbs figcaption{font-size:11px;line-height:1.3;color:var(--muted);margin-top:2px}
+.deep table.wt td,.deep table.wt th{font-size:13px}
+.dapply li{margin:4px 0}
+.deep-panel .cards .card .c-d{font-size:12.5px}
+@media(max-width:760px){ol.dflow>li{grid-template-columns:1fr}.dthumbs{justify-content:flex-start;max-width:none}.dthumbs figure,.dthumbs img{width:96px}}
+
 /* reward icons (tools/rw_icons.py) */
 img.rwi{height:1.35em;width:auto;max-width:2.2em;vertical-align:-.32em;margin:0 3px 0 1px;object-fit:contain}
