@@ -66,7 +66,7 @@ details.flow{margin-top:8px}details.flow summary{cursor:pointer;color:var(--mute
 
 .event-capture-release{padding:20px;border:1px solid #b4d8e9;border-top:4px solid #137a9a;background:#eff9fc;border-radius:10px;margin:0 0 24px}.event-capture-release h2{margin-top:0}.event-capture-link{font-weight:700}.event-capture-toc ol{columns:2}@media(max-width:700px){.event-capture-toc ol{columns:1}}
 
-.deep{border:2px solid #6c4bd8;border-radius:12px;padding:6px 16px 14px;background:#faf8ff;margin:10px 0 18px}
+.deep{border:2px solid #6c4bd8;border-radius:12px;padding:6px 16px 14px;background:#faf8ff;margin:10px 0 18px;display:flow-root}
 .deep h3{color:#4b3f9e}.deep .dmeta{font-size:12.5px;color:var(--muted);margin:2px 0 8px}
 .ev{display:inline-block;font-size:11px;font-weight:700;line-height:16px;border-radius:4px;padding:0 5px;color:#fff;margin:0 3px 0 0;vertical-align:1px;cursor:help}
 .ev-S{background:#2c6fbb}.ev-L{background:#1d8a5a}.ev-P{background:#c2410c}.ev-I{background:#7c3aed}.ev-D{background:#64748b}
